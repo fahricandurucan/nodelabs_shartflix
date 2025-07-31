@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class PhotoUploadPage extends StatelessWidget {
   const PhotoUploadPage({super.key});
@@ -19,7 +20,7 @@ class PhotoUploadPage extends StatelessWidget {
           child: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
-              // TODO: Navigate back
+              context.go('/profile');
             },
           ),
         ),
@@ -50,7 +51,7 @@ class PhotoUploadPage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
-            
+
             // Description Text
             const Text(
               'Resources out incentivize relaxation floor loss cc.',
@@ -61,7 +62,7 @@ class PhotoUploadPage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 48),
-            
+
             // Photo Upload Area
             Container(
               width: double.infinity,
@@ -112,7 +113,7 @@ class PhotoUploadPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 48),
-            
+
             // Continue Button
             ElevatedButton(
               onPressed: () {
@@ -139,4 +140,4 @@ class PhotoUploadPage extends StatelessWidget {
       ),
     );
   }
-} 
+}

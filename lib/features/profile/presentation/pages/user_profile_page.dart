@@ -46,7 +46,7 @@ class _UserProfileView extends StatelessWidget {
           child: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
-              // TODO: Navigate back
+              context.go('/discover');
             },
           ),
         ),
