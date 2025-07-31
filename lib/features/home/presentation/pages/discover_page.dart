@@ -116,7 +116,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   }
                   
                   final movie = state.movies[index];
-                  print('🎬 DiscoverPage: Building movie card for index $index: ${movie.title}');
+                  print('🎬 DiscoverPage: Building movie card for index $index: ${movie.title} - ${movie.isFavorite}');
                   return SizedBox(
                     height: MediaQuery.of(context).size.height,
                     child: Stack(

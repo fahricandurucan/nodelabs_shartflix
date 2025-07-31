@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nodelabs_shartflix/features/movies/data/models/movie_model.dart';
 
 import '../../../../core/services/api_service.dart';
 import '../../data/repositories/movies_repository_impl.dart';
@@ -17,7 +18,7 @@ abstract class MoviesEvent extends Equatable {
 class LoadMovies extends MoviesEvent {
   final int page;
 
-  const LoadMovies({this.page = 0});
+  const LoadMovies({this.page = 1});
 
   @override
   List<Object?> get props => [page];
@@ -49,7 +50,7 @@ class MoviesInitial extends MoviesState {}
 class MoviesLoading extends MoviesState {}
 
 class MoviesLoaded extends MoviesState {
-  final List<Movie> movies;
+  final List<MovieModel> movies;
   final int currentPage;
   final bool hasReachedMax;
 
@@ -60,7 +61,7 @@ class MoviesLoaded extends MoviesState {
   });
 
   MoviesLoaded copyWith({
-    List<Movie>? movies,
+    List<MovieModel>? movies,
     int? currentPage,
     bool? hasReachedMax,
   }) {
@@ -122,7 +123,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     
     _lastRequestedPage = event.page;
     
-    if (event.page == 0) {
+    if (event.page == 1) {
       print('🔄 BLoC: Emitting loading state');
       emit(MoviesLoading());
     }
@@ -131,7 +132,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       final movies = await _getMoviesUseCase(page: event.page);
       print('📦 BLoC: Received ${movies.length} movies for page ${event.page}');
       
-      if (event.page == 0) {
+      if (event.page == 1) {
         print('🔄 BLoC: First page - emitting MoviesLoaded with ${movies.length} movies');
         emit(MoviesLoaded(
           movies: movies,
@@ -185,7 +186,6 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
       try {
         final movieId = event.movieId;
         await _moviesRepository.toggleFavorite(movieId);
-        add(LoadFavoriteMovies());
         final currentState = state as MoviesLoaded;
         final updatedMovies = currentState.movies.map((movie) {
           if (movie.id == event.movieId) {

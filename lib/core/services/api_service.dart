@@ -85,7 +85,7 @@ class ApiService {
   }
 
   // Movie Methods
-  Future<Map<String, dynamic>> getMovieList({int page = 0}) async {
+  Future<Map<String, dynamic>> getMovieList({int page = 1}) async {
     try {
       print('🔍 API Call: Getting movies for page $page');
       print('🔗 API URL: ${AppConstants.baseUrl}${AppConstants.movieListEndpoint}');

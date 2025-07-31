@@ -16,7 +16,7 @@ MovieModel _$MovieModelFromJson(Map<String, dynamic> json) => MovieModel(
       releaseDate: json['releaseDate'] as String,
       genres:
           (json['genres'] as List<dynamic>).map((e) => e as String).toList(),
-      isFavorite: json['isFavorite'] as bool? ?? false,
+      isFavorite: json['isFavorite'] as bool,
     );
 
 Map<String, dynamic> _$MovieModelToJson(MovieModel instance) =>

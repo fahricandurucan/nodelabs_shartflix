@@ -15,8 +15,33 @@ class MovieModel extends Movie {
     required super.voteAverage,
     required super.releaseDate,
     required super.genres,
-    super.isFavorite = false,
+    required super.isFavorite,
   });
+
+   @override
+  MovieModel copyWith({
+    String? id,
+    String? title,
+    String? overview,
+    String? posterPath,
+    String? backdropPath,
+    double? voteAverage,
+    String? releaseDate,
+    List<String>? genres,
+    bool? isFavorite,
+  }) {
+    return MovieModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      overview: overview ?? this.overview,
+      posterPath: posterPath ?? this.posterPath,
+      backdropPath: backdropPath ?? this.backdropPath,
+      voteAverage: voteAverage ?? this.voteAverage,
+      releaseDate: releaseDate ?? this.releaseDate,
+      genres: genres ?? this.genres,
+      isFavorite: isFavorite ?? this.isFavorite,
+    );
+  }
 
   factory MovieModel.fromJson(Map<String, dynamic> json) => _$MovieModelFromJson(json);
   Map<String, dynamic> toJson() => _$MovieModelToJson(this);
@@ -31,7 +56,7 @@ class MovieModel extends Movie {
       voteAverage: (json['voteAverage'] ?? json['rating'] ?? 7.5).toDouble(),
       releaseDate: json['releaseDate'] ?? '2024-01-01',
       genres: (json['Genre'] ?? '').toString().split(', ').where((g) => g.isNotEmpty).toList(),
-      isFavorite: false,
+      isFavorite: json['isFavorite'] ?? false,
     );
   }
 } 

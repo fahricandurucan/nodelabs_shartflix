@@ -9,7 +9,7 @@ class MoviesRepositoryImpl implements MoviesRepository {
   MoviesRepositoryImpl(this._apiService);
 
   @override
-  Future<List<Movie>> getMovieList({int page = 1}) async {
+  Future<List<MovieModel>> getMovieList({int page = 1}) async {
     try {
       print('🎬 Repository: Getting movies for page $page');
       final response = await _apiService.getMovieList(page: page);
@@ -41,7 +41,7 @@ class MoviesRepositoryImpl implements MoviesRepository {
       
       final movies = moviesData.map((movieJson) {
         try {
-          print('   🎬 Processing movie: ${movieJson['Title'] ?? movieJson['title'] ?? 'Unknown'}');
+          print('   --------  isFavorite = ${movieJson['isFavorite']}   🎬 Processing movie: ${movieJson['Title'] ?? movieJson['title'] ?? 'Unknown.'}');
           return MovieModel.fromApiResponse(movieJson);
         } catch (e) {
           print('❌ Error parsing movie: $movieJson, Error: $e');
@@ -54,7 +54,8 @@ class MoviesRepositoryImpl implements MoviesRepository {
             backdropPath: movieJson['backdropUrl'] ?? '',
             voteAverage: 7.5,
             releaseDate: '2024-01-01',
-            genres: const ['Unknown'],
+            genres: const ['Unknown'], 
+            isFavorite: movieJson['isFavorite'],
           );
         }
       }).toList();
