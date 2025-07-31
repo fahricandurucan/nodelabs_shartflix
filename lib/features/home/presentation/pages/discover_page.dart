@@ -59,6 +59,13 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
   @override
   Widget build(BuildContext context) {
+    final moviesBloc = context.read<MoviesBloc>();
+    final state = moviesBloc.state;
+    if (state is! MoviesLoaded && state is! MoviesLoading) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        moviesBloc.add(const LoadMovies());
+      });
+    }
     return Scaffold(
       backgroundColor: Colors.black,
       body: BlocListener<MoviesBloc, MoviesState>(

@@ -76,4 +76,23 @@ class MoviesRepositoryImpl implements MoviesRepository {
       throw Exception('Favori durumu değiştirilemedi: ${e.toString()}');
     }
   }
+
+  @override
+  Future<List<Movie>> getFavoriteMovies() async {
+    try {
+      final response = await _apiService.getFavoriteMovies();
+      List<dynamic> moviesData = [];
+      if (response['data'] != null && response['data'] is List) {
+        moviesData = response['data'] as List;
+      } else {
+        return [];
+      }
+      return moviesData.map((movieJson) {
+        final movie = MovieModel.fromApiResponse(movieJson);
+        return movie.copyWith(isFavorite: true);
+      }).toList();
+    } catch (e) {
+      throw Exception('Favori filmler alınamadı: ${e.toString()}');
+    }
+  }
 } 

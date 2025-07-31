@@ -3,11 +3,33 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../auth/presentation/bloc/auth_bloc.dart';
+import '../../../movies/domain/repositories/movies_repository.dart';
+import '../../../movies/presentation/bloc/favorite_movies_bloc.dart' as favorite_bloc;
 import '../../../movies/presentation/widgets/limited_offer_bottom_sheet.dart';
+
+String getSafeImageUrl(String url) {
+  if (url.isEmpty) return '';
+  if (url.startsWith('http://')) {
+    return url.replaceFirst('http://', 'https://');
+  }
+  return url;
+}
 
 class UserProfilePage extends StatelessWidget {
   const UserProfilePage({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => favorite_bloc.FavoriteMoviesBloc(
+        RepositoryProvider.of<MoviesRepository>(context),
+      )..add(favorite_bloc.LoadFavoriteMovies()),
+      child: _UserProfileView(),
+    );
+  }
+}
+
+class _UserProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -199,23 +221,87 @@ class UserProfilePage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  
-                  // Movies Grid - Placeholder for now
-                  Container(
-                    height: 200,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF2A2A2A),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Favori filmler burada görünecek',
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
+                  BlocBuilder<favorite_bloc.FavoriteMoviesBloc, favorite_bloc.FavoriteMoviesState>(
+                    builder: (context, movieState) {
+                      if (movieState is favorite_bloc.FavoriteMoviesLoaded) {
+                        final favorites = movieState.favoriteMovies;
+                        if (favorites.isEmpty) {
+                          return Container(
+                            height: 200,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF2A2A2A),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Henüz favori filminiz yok',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 0.7,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                          ),
+                          itemCount: favorites.length,
+                          itemBuilder: (context, index) {
+                            final movie = favorites[index];
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(12),
+                                image: movie.posterPath.isNotEmpty
+                                    ? DecorationImage(
+                                        image: NetworkImage(getSafeImageUrl(movie.posterPath)),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : null,
+                              ),
+                              child: movie.posterPath.isEmpty
+                                  ? const Center(
+                                      child: Icon(Icons.movie, color: Colors.white, size: 40),
+                                    )
+                                  : null,
+                            );
+                          },
+                        );
+                      } else if (movieState is favorite_bloc.FavoriteMoviesError) {
+                        return Container(
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF2A2A2A),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Center(
+                            child: Text(
+                              movieState.message,
+                              style: const TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        );
+                      } else if (movieState is favorite_bloc.FavoriteMoviesLoading) {
+                        return Container(
+                          height: 200,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF2A2A2A),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
                   ),
                   
                   const SizedBox(height: 32),

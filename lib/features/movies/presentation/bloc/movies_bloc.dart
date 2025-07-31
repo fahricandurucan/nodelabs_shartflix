@@ -34,6 +34,8 @@ class ToggleFavorite extends MoviesEvent {
   List<Object?> get props => [movieId];
 }
 
+class LoadFavoriteMovies extends MoviesEvent {}
+
 // States
 abstract class MoviesState extends Equatable {
   const MoviesState();
@@ -82,11 +84,19 @@ class MoviesError extends MoviesState {
   List<Object?> get props => [message];
 }
 
+class FavoriteMoviesLoaded extends MoviesState {
+  final List<Movie> favoriteMovies;
+  const FavoriteMoviesLoaded(this.favoriteMovies);
+  @override
+  List<Object?> get props => [favoriteMovies];
+}
+
 // BLoC
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   final GetMoviesUseCase _getMoviesUseCase;
   final MoviesRepositoryImpl _moviesRepository;
   int? _lastRequestedPage;
+  List<Movie> _favoriteMovies = [];
 
   MoviesBloc()
       : _moviesRepository = MoviesRepositoryImpl(ApiService()),
@@ -95,6 +105,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     on<LoadMovies>(_onLoadMovies);
     on<RefreshMovies>(_onRefreshMovies);
     on<ToggleFavorite>(_onToggleFavorite);
+    on<LoadFavoriteMovies>(_onLoadFavoriteMovies);
   }
 
   Future<void> _onLoadMovies(
@@ -153,15 +164,28 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     add(const LoadMovies(page: 0));
   }
 
+  Future<void> _onLoadFavoriteMovies(
+    LoadFavoriteMovies event,
+    Emitter<MoviesState> emit,
+  ) async {
+    try {
+      final response = await _moviesRepository.getFavoriteMovies();
+      _favoriteMovies = response;
+      emit(FavoriteMoviesLoaded(_favoriteMovies));
+    } catch (e) {
+      emit(MoviesError('Favori filmler yüklenemedi: $e'));
+    }
+  }
+
   Future<void> _onToggleFavorite(
     ToggleFavorite event,
     Emitter<MoviesState> emit,
   ) async {
     if (state is MoviesLoaded) {
       try {
-        final movieIdInt = event.movieId;
-        await _moviesRepository.toggleFavorite(movieIdInt);
-        
+        final movieId = event.movieId;
+        await _moviesRepository.toggleFavorite(movieId);
+        add(LoadFavoriteMovies());
         final currentState = state as MoviesLoaded;
         final updatedMovies = currentState.movies.map((movie) {
           if (movie.id == event.movieId) {
@@ -169,7 +193,6 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
           }
           return movie;
         }).toList();
-
         emit(MoviesLoaded(
           movies: updatedMovies,
           currentPage: currentState.currentPage,
