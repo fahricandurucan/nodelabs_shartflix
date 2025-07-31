@@ -2,15 +2,27 @@ import 'package:flutter/material.dart';
 
 import '../../domain/entities/movie.dart';
 
-class FullScreenMovieCard extends StatelessWidget {
+class FullScreenMovieCard extends StatefulWidget {
   final Movie movie;
   final VoidCallback onFavoriteToggle;
+  final VoidCallback? onNextMovie;
+  final VoidCallback? onPreviousMovie;
 
   const FullScreenMovieCard({
     super.key,
     required this.movie,
     required this.onFavoriteToggle,
+    this.onNextMovie,
+    this.onPreviousMovie,
   });
+
+  @override
+  State<FullScreenMovieCard> createState() => _FullScreenMovieCardState();
+}
+
+class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
+  bool _isDescriptionExpanded = false;
+  double _dragOffset = 0.0;
 
   String _getImageUrl(String originalUrl) {
     // If URL is empty or null, return placeholder
@@ -38,194 +50,195 @@ class FullScreenMovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('poster image = ${movie.posterPath}');
-    final imageUrl = _getImageUrl(movie.posterPath);
+    print('poster image = ${widget.movie.posterPath}');
+    final imageUrl = _getImageUrl(widget.movie.posterPath);
     print('processed image url = $imageUrl');
     
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(imageUrl),
-          fit: BoxFit.cover,
-          onError: (exception, stackTrace) {
-            print('Image loading error: $exception');
-            // Handle image loading error
-          },
-        ),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.transparent,
-              Colors.black.withOpacity(0.3),
-              Colors.black.withOpacity(0.7),
-            ],
-            stops: const [0.0, 0.6, 1.0],
+    return GestureDetector(
+      onVerticalDragUpdate: (details) {
+        setState(() {
+          _dragOffset += details.delta.dy;
+        });
+      },
+      onVerticalDragEnd: (details) {
+        if (_dragOffset < -50 && widget.onNextMovie != null) {
+          // Swipe up - go to next movie
+          widget.onNextMovie!();
+        } else if (_dragOffset > 50 && widget.onPreviousMovie != null) {
+          // Swipe down - go to previous movie
+          widget.onPreviousMovie!();
+        }
+        setState(() {
+          _dragOffset = 0.0;
+        });
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        transform: Matrix4.translationValues(0, _dragOffset, 0),
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: NetworkImage(imageUrl),
+              fit: BoxFit.cover,
+              onError: (exception, stackTrace) {
+                print('Image loading error: $exception');
+              },
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: Column(
+          child: Stack(
             children: [
-              // Top Section - Status Bar Area
-              const SizedBox(height: 20),
-              
-              // Middle Section - Main Content
-              Expanded(
-                child: Container(),
+              // Bottom gradient overlay
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.transparent,
+                        Colors.black.withOpacity(0.7),
+                        Colors.black.withOpacity(0.9),
+                      ],
+                    ),
+                  ),
+                ),
               ),
               
-              // Bottom Section - Movie Info
-              Container(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Movie Title
-                    Text(
-                      movie.title,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        shadows: [
-                          Shadow(
-                            offset: Offset(0, 2),
-                            blurRadius: 4,
-                            color: Colors.black54,
-                          ),
-                        ],
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 12),
+              // Favorite button (bottom right - Instagram style)
+              Positioned(
+                bottom: 200, // Above navigation bar
+                right: 10,
+                child: GestureDetector(
+                  onTap: widget.onFavoriteToggle,
+                  child: Container(
+                    width: 50,
+                    height: 80,
                     
-                    // Movie Details Row
-                    Row(
-                      children: [
-                        // Rating
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFE50914),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.star,
-                                color: Colors.white,
-                                size: 16,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                movie.voteAverage.toStringAsFixed(1),
-                                style: const TextStyle(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.black.withOpacity(0.6),
+                      border: Border.all(color: const Color.fromARGB(255, 207, 207, 207).withOpacity(0.5))
+                    ),
+                    
+                    child: Icon(
+                      widget.movie.isFavorite 
+                          ? Icons.favorite 
+                          : Icons.favorite_border,
+                      color: widget.movie.isFavorite 
+                          ? const Color(0xFFE50914) 
+                          : Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ),
+              
+              // Movie info at bottom
+              Positioned(
+                bottom: 50,
+                left: 0,
+                right: 0,
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Netflix logo and title
+                      Row(
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: const BoxDecoration(
+                              color: Color(0xFFE50914),
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'N',
+                                style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 12,
+                                  fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 12),
-                        
-                        // Genres
-                        if (movie.genres.isNotEmpty)
+                          const SizedBox(width: 12),
                           Expanded(
                             child: Text(
-                              movie.genres.take(2).join(', '),
-                              style: TextStyle(
-                                color: Colors.grey.shade300,
-                                fontSize: 14,
+                              widget.movie.title,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
                               ),
-                              maxLines: 1,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    
-                    // Movie Description
-                    Text(
-                      movie.overview,
-                      style: TextStyle(
-                        color: Colors.grey.shade200,
-                        fontSize: 16,
-                        height: 1.4,
-                        shadows: const [
-                          Shadow(
-                            offset: Offset(0, 1),
-                            blurRadius: 2,
-                            color: Colors.black54,
-                          ),
                         ],
                       ),
-                      maxLines: 4,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 20),
-                    
-                    // Action Buttons
-                    Row(
-                      children: [
-                        // Play Button
-                        Expanded(
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              // TODO: Play movie
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFE50914),
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            icon: const Icon(Icons.play_arrow, color: Colors.white),
-                            label: const Text(
-                              'İzle',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        
-                        // More Info Button
-                        Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.6),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.grey.shade600),
-                          ),
-                          child: IconButton(
-                            onPressed: () {
-                              // TODO: Show more info
-                            },
-                            icon: const Icon(
-                              Icons.info_outline,
+                      // const SizedBox(height: 12),
+                      
+                      // Movie description with expandable text
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.movie.overview,
+                            style: const TextStyle(
                               color: Colors.white,
-                              size: 24,
+                              fontSize: 16,
+                              height: 1.4,
                             ),
+                            maxLines: _isDescriptionExpanded ? null : 3,
+                            overflow: _isDescriptionExpanded ? null : TextOverflow.ellipsis,
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                          if (!_isDescriptionExpanded && widget.movie.overview.length > 100)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _isDescriptionExpanded = true;
+                                });
+                              },
+                              child: const Text(
+                                'Daha Fazlası',
+                                style: TextStyle(
+                                  color: Color(0xFFE50914),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          if (_isDescriptionExpanded)
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _isDescriptionExpanded = false;
+                                });
+                              },
+                              child: const Text(
+                                'Daha Az',
+                                style: TextStyle(
+                                  color: Color(0xFFE50914),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
             ],

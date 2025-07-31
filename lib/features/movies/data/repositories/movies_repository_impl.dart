@@ -13,16 +13,16 @@ class MoviesRepositoryImpl implements MoviesRepository {
     try {
       print('🎬 Repository: Getting movies for page $page');
       final response = await _apiService.getMovieList(page: page);
-      
+
       // Debug: Print response structure
       print('📦 Repository Response for page $page:');
       print('   Response Type: ${response.runtimeType}');
       print('   Response Keys: ${response.keys.toList()}');
       print('   Full Response: $response');
-      
+
       // Handle different response structures
       List<dynamic> moviesData;
-      
+
       if (response['data'] != null && response['data']['movies'] != null) {
         moviesData = response['data']['movies'] as List;
         print('   📋 Found movies in data.movies: ${moviesData.length} items');
@@ -36,12 +36,13 @@ class MoviesRepositoryImpl implements MoviesRepository {
         print('❌ Unexpected response structure: $response');
         return [];
       }
-      
+
       print('🎭 Processing ${moviesData.length} movies for page $page');
-      
+
       final movies = moviesData.map((movieJson) {
         try {
-          print('   --------  isFavorite = ${movieJson['isFavorite']}   🎬 Processing movie: ${movieJson['Title'] ?? movieJson['title'] ?? 'Unknown.'}');
+          print(
+              '   --------  isFavorite = ${movieJson['isFavorite']}   🎬 Processing movie: ${movieJson['Title'] ?? movieJson['title'] ?? 'Unknown.'}');
           return MovieModel.fromApiResponse(movieJson);
         } catch (e) {
           print('❌ Error parsing movie: $movieJson, Error: $e');
@@ -49,17 +50,37 @@ class MoviesRepositoryImpl implements MoviesRepository {
           return MovieModel(
             id: movieJson['id']?.toString() ?? '0',
             title: movieJson['Title'] ?? movieJson['title'] ?? 'Unknown Movie',
-            overview: movieJson['description'] ?? movieJson['Description'] ?? 'No description available',
+            overview:
+                movieJson['description'] ?? movieJson['Description'] ?? 'No description available',
             posterPath: movieJson['Poster'] ?? movieJson['posterUrl'] ?? '',
             backdropPath: movieJson['backdropUrl'] ?? '',
             voteAverage: 7.5,
             releaseDate: '2024-01-01',
-            genres: const ['Unknown'], 
+            genres: const ['Unknown'],
             isFavorite: movieJson['isFavorite'],
+            year: movieJson['year']?.toString() ?? '',
+            rated: movieJson['rated'] ?? '',
+            released: movieJson['Released'] ?? '',
+            runtime: movieJson['Runtime'] ?? '',
+            director: movieJson['Director'] ?? '',
+            writer: movieJson['Writer'] ?? '',
+            actors: movieJson['Actors'] ?? '',
+            language: movieJson['Language'] ?? '',
+            country: movieJson['Country'] ?? '',
+            awards: movieJson['Awards'] ?? '',
+            metascore: movieJson['Metascore']?.toString() ?? '',
+            imdbRating: movieJson['imdbRating']?.toString() ?? '',
+            imdbVotes: movieJson['imdbVotes']?.toString() ?? '',
+            imdbID: movieJson['imdbID'] ?? '',
+            type: movieJson['Type'] ?? '',
+            response: movieJson['Response'] ?? '',
+            images:
+                (movieJson['Images'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? [],
+            comingSoon: movieJson['comingSoon'] ?? false,
           );
         }
       }).toList();
-      
+
       print('✅ Successfully processed ${movies.length} movies for page $page');
       return movies;
     } catch (e) {
@@ -96,4 +117,4 @@ class MoviesRepositoryImpl implements MoviesRepository {
       throw Exception('Favori filmler alınamadı: ${e.toString()}');
     }
   }
-} 
+}

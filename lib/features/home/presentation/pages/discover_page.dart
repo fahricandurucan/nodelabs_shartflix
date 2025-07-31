@@ -98,193 +98,59 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 );
               }
               
-              return ListView.builder(
-                controller: _scrollController,
-                itemCount: state.movies.length + (state.hasReachedMax ? 0 : 1),
-                itemBuilder: (context, index) {
-                  if (index == state.movies.length) {
-                    // Load more indicator
-                    print('🔄 DiscoverPage: Showing load more indicator');
-                    return const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFE50914)),
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<MoviesBloc>().add(RefreshMovies());
+                },
+                color: const Color(0xFFE50914),
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: state.movies.length + (state.hasReachedMax ? 0 : 1),
+                  itemBuilder: (context, index) {
+                    if (index == state.movies.length) {
+                      // Load more indicator
+                      print('🔄 DiscoverPage: Showing load more indicator');
+                      return const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFE50914)),
+                          ),
                         ),
+                      );
+                    }
+                    
+                    final movie = state.movies[index];
+                    print('🎬 DiscoverPage: Building movie card for index $index: ${movie.title} - ${movie.isFavorite}');
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: FullScreenMovieCard(
+                        movie: movie,
+                        onFavoriteToggle: () {
+                          context.read<MoviesBloc>().add(ToggleFavorite(movie.id));
+                        },
+                        onNextMovie: () {
+                          if (index < state.movies.length - 1) {
+                            _scrollController.animateTo(
+                              (index + 1) * MediaQuery.of(context).size.height,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          }
+                        },
+                        onPreviousMovie: () {
+                          if (index > 0) {
+                            _scrollController.animateTo(
+                              (index - 1) * MediaQuery.of(context).size.height,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          }
+                        },
                       ),
                     );
-                  }
-                  
-                  final movie = state.movies[index];
-                  print('🎬 DiscoverPage: Building movie card for index $index: ${movie.title} - ${movie.isFavorite}');
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: Stack(
-                      children: [
-                        // Full Screen Movie Card
-                        FullScreenMovieCard(
-                          movie: movie,
-                          onFavoriteToggle: () {
-                            context.read<MoviesBloc>().add(ToggleFavorite(movie.id));
-                          },
-                        ),
-                        
-                        // Top Gradient Overlay
-                        Positioned(
-                          top: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            height: 100,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.black.withOpacity(0.6),
-                                  Colors.transparent,
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        
-                        // Bottom Gradient Overlay
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            height: 200,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Colors.transparent,
-                                  Colors.black.withOpacity(0.8),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        
-                        // Movie Info Overlay (Bottom)
-                        Positioned(
-                          bottom: 80, // Above navigation bar
-                          left: 20,
-                          right: 20,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Netflix Logo and Title
-                              Row(
-                                children: [
-                                  Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: const BoxDecoration(
-                                      color: Color(0xFFE50914),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Center(
-                                      child: Text(
-                                        'N',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Text(
-                                      movie.title,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 12),
-                              
-                              // Description
-                              Text(
-                                movie.overview,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  height: 1.4,
-                                ),
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ],
-                          ),
-                        ),
-                        
-                        // Favorite Button (Top Right)
-                        Positioned(
-                          top: 60,
-                          right: 20,
-                          child: GestureDetector(
-                            onTap: () {
-                              context.read<MoviesBloc>().add(ToggleFavorite(movie.id));
-                            },
-                            child: Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.6),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                movie.isFavorite 
-                                    ? Icons.favorite 
-                                    : Icons.favorite_border,
-                                color: movie.isFavorite 
-                                    ? const Color(0xFFE50914) 
-                                    : Colors.white,
-                                size: 24,
-                              ),
-                            ),
-                          ),
-                        ),
-                        
-                        // Page Indicator (Top Center)
-                        Positioned(
-                          top: 60,
-                          left: 0,
-                          right: 0,
-                          child: Center(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                              decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.6),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Text(
-                                '${index + 1} / ${state.movies.length}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
+                  },
+                ),
               );
             } else if (state is MoviesError) {
               print('❌ DiscoverPage: Showing error: ${state.message}');
