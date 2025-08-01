@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 import 'package:nodelabs_shartflix/features/auth/presentation/widgets/loading_gif_widget.dart';
 
 import '../../../movies/presentation/bloc/movies_bloc.dart';
@@ -82,8 +83,8 @@ class _DiscoverPageState extends State<DiscoverPage> {
             
             if (state is MoviesLoading) {
               print('🔄 DiscoverPage: Showing loading indicator');
-              return const Center(
-                child: LoadingGifWidget()
+              return  Center(
+                child: LoadingGifWidget(color: AppColors.red,)
               );
             } else if (state is MoviesLoaded) {
               print('📦 DiscoverPage: Showing ${state.movies.length} movies (page ${state.currentPage})');
@@ -108,10 +109,10 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     if (index == state.movies.length) {
                       // Load more indicator
                       print('🔄 DiscoverPage: Showing load more indicator');
-                      return const Padding(
-                        padding: EdgeInsets.all(16.0),
+                      return  Padding(
+                        padding: const EdgeInsets.all(16.0),
                         child: Center(
-                          child: LoadingGifWidget(color:Color(0xFFE50914),)
+                          child: LoadingGifWidget(color:AppColors.red,)
                         ),
                       );
                     }
@@ -165,7 +166,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                         context.read<MoviesBloc>().add(const LoadMovies());
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE50914),
+                        backgroundColor: AppColors.red,
                       ),
                       child: const Text('Tekrar Dene'),
                     ),

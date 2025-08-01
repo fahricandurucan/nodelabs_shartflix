@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 
 class LimitedOfferBottomSheet extends StatefulWidget {
   final String title;
@@ -208,7 +209,7 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
           ),
           child: Icon(
             icon,
-            color: const Color(0xFFE50914),
+            color: AppColors.red,
             size: 28,
           ),
         ),

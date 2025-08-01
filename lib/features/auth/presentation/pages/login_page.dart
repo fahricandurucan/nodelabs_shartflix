@@ -1,6 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
+
+import '../../../../core/widgets/language_selector.dart';
 import '../bloc/auth_bloc.dart';
 import '../widgets/custom_text_field.dart';
 
@@ -44,6 +48,15 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          LanguageSelector(
+            onLocaleChanged: () => setState(() {}),
+          ),
+        ],
+      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthLoading) {
@@ -62,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.red,
               ),
             );
           }
@@ -77,21 +90,21 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const Spacer(),
                   
-                  // Header Section
-                  const Text(
-                    'Merhabalar',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+                                     // Header Section
+                   Text(
+                     'login_title'.tr(),
+                     style: const TextStyle(
+                       color: Colors.white,
+                       fontSize: 32,
+                       fontWeight: FontWeight.bold,
+                     ),
+                     textAlign: TextAlign.center,
+                   ),
                   const SizedBox(height: 16),
                   
-                  const Text(
-                    'Tempus varius a vitae interdum id tortor elementum tristique eleifend at.',
-                    style: TextStyle(
+                   Text(
+                    'login_subtitle'.tr(),
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       height: 1.5,
@@ -103,12 +116,12 @@ class _LoginPageState extends State<LoginPage> {
                   // Email Input
                   CustomTextField(
                     controller: _emailController,
-                    hintText: 'E-Posta',
+                    hintText: 'email'.tr(),
                     prefixIcon: Icons.email_outlined,
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'E-posta adresi gerekli';
+                        return 'email_required'.tr();
                       }
                       if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
                         return 'Geçerli bir e-posta adresi girin';
@@ -121,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                   // Password Input
                   CustomTextField(
                     controller: _passwordController,
-                    hintText: 'Şifre',
+                    hintText: 'password'.tr(),
                     prefixIcon: Icons.lock_outline,
                     suffixIcon: _isPasswordVisible 
                         ? Icons.visibility_off 
@@ -135,10 +148,10 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Şifre gerekli';
+                        return 'password_required'.tr();
                       }
                       if (value.length < 6) {
-                        return 'Şifre en az 6 karakter olmalı';
+                        return 'password_min_length'.tr();
                       }
                       return null;
                     },
@@ -152,14 +165,14 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         // TODO: Implement forgot password
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Şifre sıfırlama özelliği yakında eklenecek'),
+                           SnackBar(
+                            content: Text('forgot_password_message'.tr()),
                           ),
                         );
                       },
-                      child: const Text(
-                        'Şifremi unuttum',
-                        style: TextStyle(
+                      child:  Text(
+                        'forgot_password'.tr(),
+                        style: const TextStyle(
                           color: Colors.white,
                           decoration: TextDecoration.underline,
                         ),
@@ -172,7 +185,7 @@ class _LoginPageState extends State<LoginPage> {
                   ElevatedButton(
                     onPressed: _isLoading ? null : _handleLogin,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFE50914),
+                      backgroundColor: AppColors.red,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
@@ -188,9 +201,9 @@ class _LoginPageState extends State<LoginPage> {
                               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           )
-                        : const Text(
-                            'Giriş Yap',
-                            style: TextStyle(
+                        :  Text(
+                            'login_button'.tr(),
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
@@ -243,9 +256,9 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        'Bir hesabın yok mu? ',
-                        style: TextStyle(
+                       Text(
+                        'no_account'.tr(),
+                        style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 16,
                         ),
@@ -254,9 +267,9 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () {
                           context.go('/register');
                         },
-                        child: const Text(
-                          'Kayıt Ol!',
-                          style: TextStyle(
+                        child:  Text(
+                          'sign_up'.tr(),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

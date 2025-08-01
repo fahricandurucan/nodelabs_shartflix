@@ -1,7 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 
+import '../../../../core/widgets/language_selector.dart';
 import '../bloc/auth_bloc.dart';
 import '../widgets/custom_text_field.dart';
 
@@ -36,9 +39,9 @@ class _RegisterPageState extends State<RegisterPage> {
     if (_formKey.currentState!.validate()) {
       if (!_acceptedTerms) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Kullanıcı sözleşmesini kabul etmelisiniz'),
-            backgroundColor: Colors.red,
+           SnackBar(
+            content: const Text('Kullanıcı sözleşmesini kabul etmelisiniz'),
+            backgroundColor: AppColors.red,
           ),
         );
         return;
@@ -62,6 +65,15 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          LanguageSelector(
+            onLocaleChanged: () => setState(() {}),
+          ),
+        ],
+      ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthLoading) {
@@ -80,7 +92,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.red,
               ),
             );
           }
@@ -96,9 +108,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 40),
                   
                   // Header Section
-                  const Text(
-                    'Hoşgeldiniz',
-                    style: TextStyle(
+                  Text(
+                    'register_title'.tr(),
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -107,9 +119,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   const SizedBox(height: 16),
                   
-                  const Text(
-                    'Tempus varius a vitae interdum id tortor elementum tristique eleifend at.',
-                    style: TextStyle(
+                  Text(
+                    'register_subtitle'.tr(),
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       height: 1.5,
@@ -121,14 +133,14 @@ class _RegisterPageState extends State<RegisterPage> {
                   // Name Input
                   CustomTextField(
                     controller: _nameController,
-                    hintText: 'Ad Soyad',
+                    hintText: 'full_name'.tr(),
                     prefixIcon: Icons.person_add_outlined,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Ad soyad gerekli';
+                        return 'full_name_required'.tr();
                       }
                       if (value.trim().split(' ').length < 2) {
-                        return 'Ad ve soyad girin';
+                        return 'full_name_invalid'.tr();
                       }
                       return null;
                     },
@@ -138,15 +150,15 @@ class _RegisterPageState extends State<RegisterPage> {
                   // Email Input
                   CustomTextField(
                     controller: _emailController,
-                    hintText: 'E-Posta',
+                    hintText: 'email'.tr(),
                     prefixIcon: Icons.email_outlined,
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'E-posta adresi gerekli';
+                        return 'email_required'.tr();
                       }
                       if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                        return 'Geçerli bir e-posta adresi girin';
+                        return 'email_invalid'.tr();
                       }
                       return null;
                     },
@@ -156,7 +168,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   // Password Input
                   CustomTextField(
                     controller: _passwordController,
-                    hintText: 'Şifre',
+                    hintText: 'password'.tr(),
                     prefixIcon: Icons.lock_outline,
                     suffixIcon: _isPasswordVisible 
                         ? Icons.visibility_off 
@@ -170,10 +182,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Şifre gerekli';
+                        return 'password_required'.tr();
                       }
                       if (value.length < 6) {
-                        return 'Şifre en az 6 karakter olmalı';
+                        return 'password_min_length'.tr();
                       }
                       return null;
                     },
@@ -183,7 +195,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   // Confirm Password Input
                   CustomTextField(
                     controller: _confirmPasswordController,
-                    hintText: 'Şifre Tekrar',
+                    hintText: 'confirm_password'.tr(),
                     prefixIcon: Icons.lock_outline,
                     suffixIcon: _isConfirmPasswordVisible 
                         ? Icons.visibility_off 
@@ -197,10 +209,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Şifre tekrarı gerekli';
+                        return 'confirm_password_required'.tr();
                       }
                       if (value != _passwordController.text) {
-                        return 'Şifreler eşleşmiyor';
+                        return 'passwords_not_match'.tr();
                       }
                       return null;
                     },
@@ -217,26 +229,26 @@ class _RegisterPageState extends State<RegisterPage> {
                             _acceptedTerms = value ?? false;
                           });
                         },
-                        activeColor: const Color(0xFFE50914),
+                        activeColor: AppColors.red,
                         checkColor: Colors.white,
                       ),
                       Expanded(
                         child: RichText(
-                          text: const TextSpan(
-                            style: TextStyle(
+                          text:  TextSpan(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 14,
                             ),
                             children: [
-                              TextSpan(text: 'Kullanıcı sözleşmesini '),
+                               TextSpan(text: 'terms_agreement_part1'.tr()),
                               TextSpan(
-                                text: 'okudum ve kabul ediyorum.',
+                                text: 'terms_agreement_part2'.tr(),
                                 style: TextStyle(
                                   decoration: TextDecoration.underline,
-                                  color: Color(0xFFE50914),
+                                  color: AppColors.red,
                                 ),
                               ),
-                              TextSpan(text: ' Bu sözleşmeyi okuyarak devam ediniz lütfen.'),
+                               TextSpan(text: 'please_read_terms'.tr()),
                             ],
                           ),
                         ),
@@ -249,7 +261,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ElevatedButton(
                     onPressed: _isLoading ? null : _handleRegister,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFE50914),
+                      backgroundColor: AppColors.red,
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       shape: RoundedRectangleBorder(
@@ -265,9 +277,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           )
-                        : const Text(
-                            'Şimdi Kaydol',
-                            style: TextStyle(
+                        :  Text(
+                            'register_button'.tr(),
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
@@ -320,9 +332,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        'Zaten bir hesabın var mı? ',
-                        style: TextStyle(
+                       Text(
+                        'has_account'.tr(),
+                        style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 16,
                         ),
@@ -331,9 +343,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         onTap: () {
                           context.go('/login');
                         },
-                        child: const Text(
-                          'Giriş Yap!',
-                          style: TextStyle(
+                        child: Text(
+                          'login_link'.tr(),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

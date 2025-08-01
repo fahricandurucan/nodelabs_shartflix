@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 
 import 'core/routes/app_router.dart';
 import 'core/services/api_service.dart';
@@ -10,15 +12,26 @@ import 'features/movies/data/repositories/movies_repository_impl.dart';
 import 'features/movies/domain/repositories/movies_repository.dart';
 import 'features/movies/presentation/bloc/movies_bloc.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   final apiService = ApiService();
   runApp(
-    RepositoryProvider<MoviesRepository>(
-      create: (_) => MoviesRepositoryImpl(apiService),
-      child: const MyApp(),
+    EasyLocalization(
+      supportedLocales: const [
+        Locale('tr', 'TR'),
+        Locale('en', 'US'),
+      ],
+      path: 'assets/lang',
+      fallbackLocale: const Locale('tr', 'TR'),
+      child: Phoenix(
+        child: RepositoryProvider<MoviesRepository>(
+          create: (_) => MoviesRepositoryImpl(apiService),
+          child: const MyApp(),
+        ),
+      ),
     ),
   );
 }
@@ -42,6 +55,9 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.darkTheme,
         routerConfig: AppRouter.router,
         debugShowCheckedModeBanner: false,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
       ),
     );
   }

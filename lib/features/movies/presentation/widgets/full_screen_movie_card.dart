@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 
 import '../../domain/entities/movie.dart';
 
@@ -131,7 +132,7 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
                           ? Icons.favorite 
                           : Icons.favorite_border,
                       color: widget.movie.isFavorite 
-                          ? const Color(0xFFE50914) 
+                          ? AppColors.red
                           : Colors.white,
                       size: 24,
                     ),
@@ -156,8 +157,8 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
                           Container(
                             width: 40,
                             height: 40,
-                            decoration: const BoxDecoration(
-                              color: Color(0xFFE50914),
+                            decoration:  BoxDecoration(
+                              color: AppColors.red,
                               shape: BoxShape.circle,
                             ),
                             child: const Center(
@@ -209,10 +210,10 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
                                   _isDescriptionExpanded = true;
                                 });
                               },
-                              child: const Text(
+                              child:  Text(
                                 'Daha Fazlası',
                                 style: TextStyle(
-                                  color: Color(0xFFE50914),
+                                  color: AppColors.red,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -225,10 +226,10 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
                                   _isDescriptionExpanded = false;
                                 });
                               },
-                              child: const Text(
+                              child: Text(
                                 'Daha Az',
                                 style: TextStyle(
-                                  color: Color(0xFFE50914),
+                                  color: AppColors.red,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),

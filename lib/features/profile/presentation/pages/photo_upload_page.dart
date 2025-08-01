@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 import 'package:nodelabs_shartflix/features/auth/presentation/widgets/loading_gif_widget.dart';
 
 import '../../../../core/services/api_service.dart';
@@ -48,7 +50,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Fotoğraf seçilirken hata oluştu: ${e.toString()}'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.red,
           duration: const Duration(seconds: 3),
         ),
       );
@@ -79,7 +81,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Kamera hatası: ${e.toString()}'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.red,
           duration: const Duration(seconds: 3),
         ),
       );
@@ -132,7 +134,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Yükleme sırasında hata oluştu: ${state.message}'),
-              backgroundColor: Colors.red,
+              backgroundColor: AppColors.red,
             ),
           );
           break;
@@ -146,7 +148,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Yükleme sırasında hata oluştu: ${e.toString()}'),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.red,
         ),
       );
     } finally {
@@ -164,18 +166,18 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: const Color(0xFF2A2A2A),
-          title: const Text(
-            'Fotoğraf Seç',
-            style: TextStyle(color: Colors.white),
+          title:  Text(
+            'select_photo'.tr(),
+            style: const TextStyle(color: Colors.white),
           ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
                 leading: const Icon(Icons.camera_alt, color: Colors.white),
-                title: const Text(
-                  'Kamera',
-                  style: TextStyle(color: Colors.white),
+                title:  Text(
+                  'camera'.tr(),
+                  style: const TextStyle(color: Colors.white),
                 ),
                 onTap: () {
                   Navigator.pop(context);
@@ -184,9 +186,9 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
               ),
               ListTile(
                 leading: const Icon(Icons.photo_library, color: Colors.white),
-                title: const Text(
-                  'Galeri',
-                  style: TextStyle(color: Colors.white),
+                title:  Text(
+                  'gallery'.tr(),
+                  style: const TextStyle(color: Colors.white),
                 ),
                 onTap: () {
                   Navigator.pop(context);
@@ -220,9 +222,9 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
             },
           ),
         ),
-        title: const Text(
-          'Profil Fotoğrafı',
-          style: TextStyle(
+        title:  Text(
+          'profile_photo'.tr(),
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -237,9 +239,9 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Main Title
-            const Text(
-              'Profil Fotoğrafınızı Yükleyin',
-              style: TextStyle(
+             Text(
+              'upload_profile_photo'.tr(),
+              style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -249,9 +251,9 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
             const SizedBox(height: 16),
 
             // Description Text
-            const Text(
-              'Profil fotoğrafınızı seçerek hesabınızı kişiselleştirin.',
-              style: TextStyle(
+             Text(
+              'upload_profile_photo_description'.tr(),
+              style: const TextStyle(
                 fontSize: 16,
                 color: Colors.grey,
               ),
@@ -301,18 +303,18 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          const Text(
-                            'Fotoğraf Ekle',
-                            style: TextStyle(
+                           Text(
+                            'add_photo'.tr(),
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           const SizedBox(height: 8),
-                          const Text(
-                            'Kamera veya galeriden seçin',
-                            style: TextStyle(
+                           Text(
+                            'select_from_camera_or_gallery'.tr(),
+                            style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 14,
                             ),
@@ -327,25 +329,25 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
             ElevatedButton(
               onPressed: _isUploading ? null : _uploadPhoto,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFE50914),
+                backgroundColor: AppColors.red,
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
               child: _isUploading
-                  ? const Row(
+                  ?  Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                           height: 20,
                           child: LoadingGifWidget(color: Colors.white,)
                         ),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         Text(
-                          'Yükleniyor...',
-                          style: TextStyle(
+                          'loading'.tr(),
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
@@ -353,9 +355,9 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
                         ),
                       ],
                     )
-                  : const Text(
-                      'Fotoğrafı Yükle',
-                      style: TextStyle(
+                  :  Text(
+                      'upload_photo'.tr(),
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -63,7 +64,7 @@ class _MainLayoutState extends State<MainLayout> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'Anasayfa',
+                      'home'.tr(),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -101,7 +102,7 @@ class _MainLayoutState extends State<MainLayout> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      'Profil',
+                      'profile'.tr(),
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,

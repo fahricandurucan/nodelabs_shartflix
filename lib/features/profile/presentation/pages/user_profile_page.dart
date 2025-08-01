@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lottie/lottie.dart';
+import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 import 'package:nodelabs_shartflix/features/auth/presentation/widgets/loading_gif_widget.dart';
 
+import '../../../../core/widgets/language_selector.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../movies/domain/repositories/movies_repository.dart';
 import '../../../movies/presentation/bloc/favorite_movies_bloc.dart' as favorite_bloc;
@@ -31,7 +33,12 @@ class UserProfilePage extends StatelessWidget {
   }
 }
 
-class _UserProfileView extends StatelessWidget {
+class _UserProfileView extends StatefulWidget {
+  @override
+  State<_UserProfileView> createState() => _UserProfileViewState();
+}
+
+class _UserProfileViewState extends State<_UserProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,17 +59,20 @@ class _UserProfileView extends StatelessWidget {
             },
           ),
         ),
-        title: const Text(
-          'Profil Detayı',
-          style: TextStyle(
+        title: Text(
+          'profile_title'.tr(),
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),
         ),
         centerTitle: true,
-        actions: [
-          Container(
+                                actions: [
+                  LanguageSelector(
+                    onLocaleChanged: () => setState(() {}),
+                  ),
+                  Container(
             margin: const EdgeInsets.all(8),
             child: ElevatedButton(
               onPressed: () {
@@ -77,8 +87,8 @@ class _UserProfileView extends StatelessWidget {
                       top: MediaQuery.of(context).size.height * 0.15,
                       bottom: MediaQuery.of(context).viewInsets.bottom,
                     ),
-                    child: const LimitedOfferBottomSheet(
-                      title: 'Sınırlı Teklif',
+                    child: LimitedOfferBottomSheet(
+                      title: 'limited_offer'.tr(),
                       description:
                           'Jeton paketin\'ni seçerek bonus kazanın ve yeni bölümlerin kilidini açın!',
                     ),
@@ -86,20 +96,20 @@ class _UserProfileView extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFE50914),
+                backgroundColor: AppColors.red,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
-              child: const Row(
+              child:  Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.diamond, color: Colors.white, size: 16),
-                  SizedBox(width: 4),
+                  const Icon(Icons.diamond, color: Colors.white, size: 16),
+                  const SizedBox(width: 4),
                   Text(
-                    'Sınırlı Teklif',
-                    style: TextStyle(
+                    'limited_offer'.tr(),
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -143,7 +153,7 @@ class _UserProfileView extends StatelessWidget {
                                       )
                                     : null,
                                 color: state.user.profileImage == null
-                                    ? const Color(0xFFE50914)
+                                    ? AppColors.red
                                     : null,
                               ),
                               child: state.user.profileImage == null
@@ -177,13 +187,13 @@ class _UserProfileView extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(height: 4),
-                                  Text(
-                                    'ID: ${state.user.id}',
-                                    style: TextStyle(
-                                      color: Colors.grey.shade400,
-                                      fontSize: 14,
-                                    ),
-                                  ),
+                                                              Text(
+                              '${'user_id'.tr()}: ${state.user.id}',
+                              style: TextStyle(
+                                color: Colors.grey.shade400,
+                                fontSize: 14,
+                              ),
+                            ),
                                   const SizedBox(height: 4),
                                   Text(
                                     state.user.email,
@@ -202,20 +212,20 @@ class _UserProfileView extends StatelessWidget {
                                 context.go('/photo-upload');
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFFE50914),
+                                backgroundColor: AppColors.red,
                                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
                               ),
-                              child: const Text(
-                                'Fotoğraf Ekle',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                                                      child: Text(
+                          'add_photo'.tr(),
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                             ),
                           ],
                         ),
@@ -223,9 +233,9 @@ class _UserProfileView extends StatelessWidget {
                         const SizedBox(height: 32),
 
                         // Liked Movies Section
-                        const Text(
-                          'Beğendiğim Filmler',
-                          style: TextStyle(
+                        Text(
+                          'favorite_movies'.tr(),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -251,7 +261,7 @@ class _UserProfileView extends StatelessWidget {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         // Lottie Animation
-                                        Container(
+                                        SizedBox(
                                           height: 100,
                                           // decoration: BoxDecoration(
                                           //   color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.5),
@@ -259,7 +269,7 @@ class _UserProfileView extends StatelessWidget {
                                           // ),
                                           child: Image.asset(
                                             'assets/animations/Film.gif',
-                                            color: const Color.fromARGB(255, 218, 114, 106),
+                                            color: AppColors.red,
                                             fit: BoxFit.contain,
                                             errorBuilder: (context, error, stackTrace) {
                                               print(error.toString());
@@ -272,16 +282,16 @@ class _UserProfileView extends StatelessWidget {
                                           ),
                                         ),
                                         const SizedBox(height: 16),
-                                        const Text(
-                                          'Henüz favori filminiz yok',
-                                          style: TextStyle(
+                                        Text(
+                                          'no_favorites'.tr(),
+                                          style: const TextStyle(
                                             color: Colors.grey,
                                             fontSize: 16,
                                           ),
                                         ),
                                         const SizedBox(height: 8),
                                         Text(
-                                          'Filmleri beğenerek burada görebilirsiniz',
+                                          'no_favorites_subtitle'.tr(),
                                           style: TextStyle(
                                             color: Colors.grey.shade600,
                                             fontSize: 14,
@@ -335,7 +345,7 @@ class _UserProfileView extends StatelessWidget {
                                 child: Center(
                                   child: Text(
                                     movieState.message,
-                                    style: const TextStyle(color: Colors.red),
+                                    style:  TextStyle(color: AppColors.red,),
                                   ),
                                 ),
                               );
@@ -370,15 +380,15 @@ class _UserProfileView extends StatelessWidget {
                         context.go('/login');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE50914),
+                        backgroundColor: AppColors.red,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        'Çıkış Yap',
-                        style: TextStyle(
+                      child: Text(
+                        'logout'.tr(),
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.bold,

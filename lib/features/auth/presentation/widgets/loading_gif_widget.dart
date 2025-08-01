@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 
 class LoadingGifWidget extends StatelessWidget {
   final double width;
@@ -18,7 +19,7 @@ class LoadingGifWidget extends StatelessWidget {
       'assets/animations/Film.gif',
       width: width,
       height: height,
-      color:color ?? const Color.fromARGB(255, 218, 114, 106),
+      color:color ?? AppColors.red,
       fit: BoxFit.contain,
     );
   }
