@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:nodelabs_shartflix/features/auth/presentation/widgets/loading_gif_widget.dart';
 
 import '../../../../core/services/api_service.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
@@ -339,10 +340,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
                         SizedBox(
                           width: 20,
                           height: 20,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
+                          child: LoadingGifWidget(color: Colors.white,)
                         ),
                         SizedBox(width: 12),
                         Text(

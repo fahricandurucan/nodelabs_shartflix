@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
+import 'package:nodelabs_shartflix/features/auth/presentation/widgets/loading_gif_widget.dart';
 
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 import '../../../movies/domain/repositories/movies_repository.dart';
@@ -77,7 +79,8 @@ class _UserProfileView extends StatelessWidget {
                     ),
                     child: const LimitedOfferBottomSheet(
                       title: 'Sınırlı Teklif',
-                      description: 'Jeton paketin\'ni seçerek bonus kazanın ve yeni bölümlerin kilidini açın!',
+                      description:
+                          'Jeton paketin\'ni seçerek bonus kazanın ve yeni bölümlerin kilidini açın!',
                     ),
                   ),
                 );
@@ -111,206 +114,255 @@ class _UserProfileView extends StatelessWidget {
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           print('🔄 Profile Page: Building with state: ${state.runtimeType}');
-          
+
           if (state is Authenticated) {
-            print('✅ Profile Page: User authenticated - ${state.user.name} - ${state.user.profileImage}');
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // User Profile Section
-                  Row(
-                    children: [
-                      // Profile Image
-                      Container(
-                        width: 80,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: state.user.profileImage != null
-                              ? DecorationImage(
-                                  image: NetworkImage(state.user.profileImage!),
-                                  fit: BoxFit.cover,
-                                )
-                              : null,
-                          color: state.user.profileImage == null
-                              ? const Color(0xFFE50914)
-                              : null,
-                        ),
-                        child: state.user.profileImage == null
-                            ? Center(
-                                child: Text(
-                                  state.user.name.isNotEmpty
-                                      ? state.user.name[0].toUpperCase()
-                                      : 'U',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 32,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              )
-                            : null,
-                      ),
-                      const SizedBox(width: 16),
-                      
-                      // User Info
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+            print(
+                '✅ Profile Page: User authenticated - ${state.user.name} - ${state.user.profileImage}');
+            return Column(
+              children: [
+                // Scrollable Content
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // User Profile Section
+                        Row(
                           children: [
-                            Text(
-                              state.user.name,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
+                            // Profile Image
+                            Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: state.user.profileImage != null
+                                    ? DecorationImage(
+                                        image: NetworkImage(state.user.profileImage!),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : null,
+                                color: state.user.profileImage == null
+                                    ? const Color(0xFFE50914)
+                                    : null,
+                              ),
+                              child: state.user.profileImage == null
+                                  ? Center(
+                                      child: Text(
+                                        state.user.name.isNotEmpty
+                                            ? state.user.name[0].toUpperCase()
+                                            : 'U',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 32,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    )
+                                  : null,
+                            ),
+                            const SizedBox(width: 16),
+
+                            // User Info
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    state.user.name,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    'ID: ${state.user.id}',
+                                    style: TextStyle(
+                                      color: Colors.grey.shade400,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    state.user.email,
+                                    style: TextStyle(
+                                      color: Colors.grey.shade400,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'ID: ${state.user.id}',
-                              style: TextStyle(
-                                color: Colors.grey.shade400,
-                                fontSize: 14,
+
+                            // Add Photo Button
+                            ElevatedButton(
+                              onPressed: () {
+                                context.go('/photo-upload');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFFE50914),
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              state.user.email,
-                              style: TextStyle(
-                                color: Colors.grey.shade400,
-                                fontSize: 14,
+                              child: const Text(
+                                'Fotoğraf Ekle',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      
-                      // Add Photo Button
-                      ElevatedButton(
-                        onPressed: () {
-                          context.go('/photo-upload');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFE50914),
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                        ),
-                        child: const Text(
-                          'Fotoğraf Ekle',
+
+                        const SizedBox(height: 32),
+
+                        // Liked Movies Section
+                        const Text(
+                          'Beğendiğim Filmler',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  
-                  const SizedBox(height: 32),
-                  
-                  // Liked Movies Section
-                  const Text(
-                    'Beğendiğim Filmler',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                        const SizedBox(height: 16),
+                        BlocBuilder<favorite_bloc.FavoriteMoviesBloc,
+                            favorite_bloc.FavoriteMoviesState>(
+                          builder: (context, movieState) {
+                            if (movieState is favorite_bloc.FavoriteMoviesLoaded) {
+                              final favorites = movieState.favoriteMovies;
+                              if (favorites.isEmpty) {
+                                return Center(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    height: 200,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: const Color.fromARGB(255, 60, 60, 60),
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        // Lottie Animation
+                                        Container(
+                                          height: 100,
+                                          // decoration: BoxDecoration(
+                                          //   color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.5),
+                                          //   borderRadius: BorderRadius.circular(12),
+                                          // ),
+                                          child: Image.asset(
+                                            'assets/animations/Film.gif',
+                                            color: const Color.fromARGB(255, 218, 114, 106),
+                                            fit: BoxFit.contain,
+                                            errorBuilder: (context, error, stackTrace) {
+                                              print(error.toString());
+                                              return const Icon(
+                                                Icons.movie_outlined,
+                                                color: Colors.grey,
+                                                size: 60,
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        const Text(
+                                          'Henüz favori filminiz yok',
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          'Filmleri beğenerek burada görebilirsiniz',
+                                          style: TextStyle(
+                                            color: Colors.grey.shade600,
+                                            fontSize: 14,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }
+                              return GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 0.7,
+                                  crossAxisSpacing: 12,
+                                  mainAxisSpacing: 12,
+                                ),
+                                itemCount: favorites.length,
+                                itemBuilder: (context, index) {
+                                  final movie = favorites[index];
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.circular(12),
+                                      image: movie.posterPath.isNotEmpty
+                                          ? DecorationImage(
+                                              image:
+                                                  NetworkImage(getSafeImageUrl(movie.posterPath)),
+                                              fit: BoxFit.cover,
+                                            )
+                                          : null,
+                                    ),
+                                    child: movie.posterPath.isEmpty
+                                        ? const Center(
+                                            child: Icon(Icons.movie, color: Colors.white, size: 40),
+                                          )
+                                        : null,
+                                  );
+                                },
+                              );
+                            } else if (movieState is favorite_bloc.FavoriteMoviesError) {
+                              return Container(
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF2A2A2A),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    movieState.message,
+                                    style: const TextStyle(color: Colors.red),
+                                  ),
+                                ),
+                              );
+                            } else if (movieState is favorite_bloc.FavoriteMoviesLoading) {
+                              return Container(
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF2A2A2A),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Center(
+                                  child: LoadingGifWidget(),
+                                ),
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  BlocBuilder<favorite_bloc.FavoriteMoviesBloc, favorite_bloc.FavoriteMoviesState>(
-                    builder: (context, movieState) {
-                      if (movieState is favorite_bloc.FavoriteMoviesLoaded) {
-                        final favorites = movieState.favoriteMovies;
-                        if (favorites.isEmpty) {
-                          return Container(
-                            height: 200,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF2A2A2A),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                'Henüz favori filminiz yok',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-                        return GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 0.7,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                          ),
-                          itemCount: favorites.length,
-                          itemBuilder: (context, index) {
-                            final movie = favorites[index];
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(12),
-                                image: movie.posterPath.isNotEmpty
-                                    ? DecorationImage(
-                                        image: NetworkImage(getSafeImageUrl(movie.posterPath)),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : null,
-                              ),
-                              child: movie.posterPath.isEmpty
-                                  ? const Center(
-                                      child: Icon(Icons.movie, color: Colors.white, size: 40),
-                                    )
-                                  : null,
-                            );
-                          },
-                        );
-                      } else if (movieState is favorite_bloc.FavoriteMoviesError) {
-                        return Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF2A2A2A),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Center(
-                            child: Text(
-                              movieState.message,
-                              style: const TextStyle(color: Colors.red),
-                            ),
-                          ),
-                        );
-                      } else if (movieState is favorite_bloc.FavoriteMoviesLoading) {
-                        return Container(
-                          height: 200,
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF2A2A2A),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-                      return const SizedBox.shrink();
-                    },
-                  ),
-                  
-                  const SizedBox(height: 32),
-                  
-                  // Logout Button
-                  SizedBox(
+                ),
+
+                // Fixed Logout Button at Bottom
+                Container(
+                  padding: const EdgeInsets.all(24),
+                  child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
@@ -318,7 +370,7 @@ class _UserProfileView extends StatelessWidget {
                         context.go('/login');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
+                        backgroundColor: const Color(0xFFE50914),
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -334,8 +386,8 @@ class _UserProfileView extends StatelessWidget {
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             );
           } else {
             return const Center(
@@ -349,4 +401,4 @@ class _UserProfileView extends StatelessWidget {
       ),
     );
   }
-} 
+}

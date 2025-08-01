@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nodelabs_shartflix/features/auth/presentation/widgets/loading_gif_widget.dart';
 
 import '../../../movies/presentation/bloc/movies_bloc.dart';
 import '../../../movies/presentation/widgets/full_screen_movie_card.dart';
@@ -82,9 +83,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
             if (state is MoviesLoading) {
               print('🔄 DiscoverPage: Showing loading indicator');
               return const Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFE50914)),
-                ),
+                child: LoadingGifWidget()
               );
             } else if (state is MoviesLoaded) {
               print('📦 DiscoverPage: Showing ${state.movies.length} movies (page ${state.currentPage})');
@@ -112,9 +111,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                       return const Padding(
                         padding: EdgeInsets.all(16.0),
                         child: Center(
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFE50914)),
-                          ),
+                          child: LoadingGifWidget(color:Color(0xFFE50914),)
                         ),
                       );
                     }

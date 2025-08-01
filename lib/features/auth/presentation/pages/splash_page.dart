@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nodelabs_shartflix/features/auth/presentation/widgets/loading_gif_widget.dart';
 
 import '../bloc/auth_bloc.dart';
 
@@ -126,10 +127,7 @@ class _SplashPageState extends State<SplashPage>
                       const SizedBox(height: 48),
                       
                       // Loading indicator
-                      const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFE50914)),
-                        strokeWidth: 3,
-                      ),
+                      const LoadingGifWidget(color: Color(0xFFE50914),)
                     ],
                   ),
                 ),

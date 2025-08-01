@@ -54,6 +54,7 @@ dependencies:
   shimmer: ^3.0.0
   pull_to_refresh: ^2.0.0
   image_picker: ^1.0.7
+  lottie: ^3.1.2
 
   # Code Generation
   json_annotation: ^4.9.0
@@ -88,7 +89,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - assets/animations/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
