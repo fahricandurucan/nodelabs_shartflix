@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/services/api_service.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class PhotoUploadPage extends StatefulWidget {
   const PhotoUploadPage({super.key});
@@ -19,12 +21,14 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
   final ApiService _apiService = ApiService();
   bool _isUploading = false;
 
-  Future<void> _pickImage(ImageSource source) async {
+
+
+  Future<void> _pickImageFromGallery() async {
     try {
-      print('📸 Picking image from: ${source.toString()}');
+      print('📸 Picking image from gallery...');
       
       final XFile? image = await _picker.pickImage(
-        source: source,
+        source: ImageSource.gallery,
         maxWidth: 800,
         maxHeight: 800,
         imageQuality: 85,
@@ -40,26 +44,48 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
       }
     } catch (e) {
       print('❌ Image picker error: $e');
-      
-      String errorMessage = 'Fotoğraf seçilirken hata oluştu';
-      
-      if (e.toString().contains('channel-error')) {
-        errorMessage = 'Kamera veya galeri erişimi sağlanamadı. Lütfen izinleri kontrol edin.';
-      } else if (e.toString().contains('permission')) {
-        errorMessage = 'Kamera veya galeri izni verilmedi. Ayarlardan izin verin.';
-      } else if (e.toString().contains('cancelled')) {
-        errorMessage = 'Fotoğraf seçimi iptal edildi';
-      }
-      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(errorMessage),
+          content: Text('Fotoğraf seçilirken hata oluştu: ${e.toString()}'),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 3),
         ),
       );
     }
   }
+
+  Future<void> _pickImageFromCamera() async {
+    try {
+      print('📸 Picking image from camera...');
+      
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.camera,
+        maxWidth: 800,
+        maxHeight: 800,
+        imageQuality: 85,
+      );
+      
+      if (image != null) {
+        print('✅ Image selected: ${image.path}');
+        setState(() {
+          _selectedImage = File(image.path);
+        });
+      } else {
+        print('❌ No image selected');
+      }
+    } catch (e) {
+      print('❌ Camera error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Kamera hatası: ${e.toString()}'),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
+
 
   Future<void> _uploadPhoto() async {
     if (_selectedImage == null) {
@@ -80,21 +106,39 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
       print('📤 Starting photo upload...');
       print('📁 File path: ${_selectedImage!.path}');
       
-      // Call the actual API
-      final result = await _apiService.uploadPhoto(_selectedImage!.path);
+      // Use Auth Bloc to upload photo
+      context.read<AuthBloc>().add(UploadPhotoRequested(_selectedImage!.path));
       
-      print('✅ Upload successful: $result');
-      
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Fotoğraf başarıyla yüklendi!'),
-          backgroundColor: Colors.green,
-        ),
-      );
-      
-      // Navigate back to profile
-      if (mounted) {
-        context.go('/profile');
+      // Listen for the result
+      await for (final state in context.read<AuthBloc>().stream) {
+        if (state is PhotoUploaded) {
+          print('✅ Upload successful: ${state.photoUrl}');
+          
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Fotoğraf başarıyla yüklendi!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+          
+          // Navigate back to profile
+          if (mounted) {
+            context.go('/profile');
+          }
+          break;
+        } else if (state is AuthError) {
+          print('❌ Upload error: ${state.message}');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Yükleme sırasında hata oluştu: ${state.message}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+          break;
+        } else if (state is Authenticated) {
+          // Skip Authenticated state, we only want PhotoUploaded
+          continue;
+        }
       }
     } catch (e) {
       print('❌ Upload error: $e');
@@ -134,7 +178,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  _pickImage(ImageSource.camera);
+                  _pickImageFromCamera();
                 },
               ),
               ListTile(
@@ -145,7 +189,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
                 ),
                 onTap: () {
                   Navigator.pop(context);
-                  _pickImage(ImageSource.gallery);
+                  _pickImageFromGallery();
                 },
               ),
             ],

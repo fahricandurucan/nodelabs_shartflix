@@ -203,11 +203,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     UploadPhotoRequested event,
     Emitter<AuthState> emit,
   ) async {
+    print('🔄 Auth Bloc: Starting photo upload...');
     emit(PhotoUploading());
     try {
       final photoUrl = await _authRepository.uploadPhoto(event.filePath);
+      print('✅ Auth Bloc: Photo uploaded successfully: $photoUrl');
+      
+      // Get fresh user data from API to ensure we have the latest info
+      print('🔄 Auth Bloc: Fetching updated user profile...');
+      final updatedUser = await _authRepository.getProfile();
+      print('✅ Auth Bloc: Updated user profile: ${updatedUser.name} - ${updatedUser.profileImage}');
+      
+      // Emit the photo uploaded state for the upload page first
       emit(PhotoUploaded(photoUrl));
+      print('✅ Auth Bloc: Emitted PhotoUploaded state');
+      
+      // Then emit the updated authenticated state with fresh user data
+      emit(Authenticated(updatedUser));
+      print('✅ Auth Bloc: Emitted Authenticated state with updated user');
     } catch (e) {
+      print('❌ Auth Bloc: Error during photo upload: $e');
       emit(AuthError(e.toString()));
     }
   }

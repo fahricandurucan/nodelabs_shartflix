@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'core/routes/app_router.dart';
@@ -10,6 +11,9 @@ import 'features/movies/domain/repositories/movies_repository.dart';
 import 'features/movies/presentation/bloc/movies_bloc.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+
   final apiService = ApiService();
   runApp(
     RepositoryProvider<MoviesRepository>(

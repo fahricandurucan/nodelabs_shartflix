@@ -110,7 +110,10 @@ class _UserProfileView extends StatelessWidget {
       ),
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
+          print('🔄 Profile Page: Building with state: ${state.runtimeType}');
+          
           if (state is Authenticated) {
+            print('✅ Profile Page: User authenticated - ${state.user.name} - ${state.user.profileImage}');
             return SingleChildScrollView(
               padding: const EdgeInsets.all(24),
               child: Column(
@@ -344,7 +347,6 @@ class _UserProfileView extends StatelessWidget {
           }
         },
       ),
-
     );
   }
 } 

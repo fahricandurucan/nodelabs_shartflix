@@ -74,12 +74,22 @@ class ApiService {
 
   Future<Map<String, dynamic>> uploadPhoto(String filePath) async {
     try {
+      print('📤 Uploading photo from: $filePath');
+      print('🔗 API URL: ${AppConstants.baseUrl}${AppConstants.uploadPhotoEndpoint}');
+      
       final formData = FormData.fromMap({
         'file': await MultipartFile.fromFile(filePath),
       });
+      
       final response = await _dio.post(AppConstants.uploadPhotoEndpoint, data: formData);
+      
+      print('✅ Upload response:');
+      print('   Status Code: ${response.statusCode}');
+      print('   Data: ${response.data}');
+      
       return response.data;
     } catch (e) {
+      print('❌ Upload error: $e');
       throw _handleError(e);
     }
   }
@@ -136,7 +146,18 @@ class ApiService {
           return Exception('Bağlantı zaman aşımı');
         case DioExceptionType.badResponse:
           final statusCode = error.response?.statusCode;
-          final message = error.response?.data?['message'] ?? 'Bir hata oluştu';
+          final responseData = error.response?.data;
+          
+          // API'den gelen hata mesajını al
+          String message = 'Bir hata oluştu';
+          if (responseData != null) {
+            if (responseData['response'] != null) {
+              message = responseData['response']['message'] ?? message;
+            } else if (responseData['message'] != null) {
+              message = responseData['message'];
+            }
+          }
+          
           return Exception('Hata $statusCode: $message');
         case DioExceptionType.cancel:
           return Exception('İstek iptal edildi');

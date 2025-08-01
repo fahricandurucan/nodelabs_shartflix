@@ -86,14 +86,14 @@ class _RegisterPageState extends State<RegisterPage> {
           }
         },
         child: SafeArea(
-          child: Padding(
+          child: SingleChildScrollView(
             padding: const EdgeInsets.all(24.0),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Spacer(),
+                  const SizedBox(height: 40),
                   
                   // Header Section
                   const Text(
@@ -314,7 +314,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ],
                   ),
-                  const Spacer(),
+                  const SizedBox(height: 40),
                   
                   // Login Link
                   Row(
