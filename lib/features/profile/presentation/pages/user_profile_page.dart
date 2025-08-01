@@ -344,36 +344,7 @@ class _UserProfileView extends StatelessWidget {
           }
         },
       ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          border: Border(
-            top: BorderSide(color: Colors.grey, width: 0.5),
-          ),
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.black,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.grey,
-          type: BottomNavigationBarType.fixed,
-          currentIndex: 1, // Profile is selected
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Anasayfa',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profil',
-            ),
-          ],
-          onTap: (index) {
-            if (index == 0) {
-              context.go('/discover');
-            }
-          },
-        ),
-      ),
+
     );
   }
 } 

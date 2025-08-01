@@ -199,10 +199,10 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
                               fontSize: 16,
                               height: 1.4,
                             ),
-                            maxLines: _isDescriptionExpanded ? null : 3,
+                            maxLines: _isDescriptionExpanded ? null : 2,
                             overflow: _isDescriptionExpanded ? null : TextOverflow.ellipsis,
                           ),
-                          if (!_isDescriptionExpanded && widget.movie.overview.length > 100)
+                          if (!_isDescriptionExpanded && widget.movie.overview.length > 50)
                             GestureDetector(
                               onTap: () {
                                 setState(() {

@@ -53,6 +53,7 @@ dependencies:
   cached_network_image: ^3.3.1
   shimmer: ^3.0.0
   pull_to_refresh: ^2.0.0
+  image_picker: ^1.0.7
 
   # Code Generation
   json_annotation: ^4.9.0

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../movies/presentation/bloc/movies_bloc.dart';
 import '../../../movies/presentation/widgets/full_screen_movie_card.dart';
@@ -187,36 +186,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
           },
         ),
       ),
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: Colors.black,
-          border: Border(
-            top: BorderSide(color: Colors.grey, width: 0.5),
-          ),
-        ),
-        child: BottomNavigationBar(
-          backgroundColor: Colors.black,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.grey,
-          type: BottomNavigationBarType.fixed,
-          currentIndex: 0, // Home is selected
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Anasayfa',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profil',
-            ),
-          ],
-          onTap: (index) {
-            if (index == 1) {
-              context.go('/profile');
-            }
-          },
-        ),
-      ),
+
     );
   }
 } 
