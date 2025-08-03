@@ -16,10 +16,8 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await _apiService.login(email, password);
       
-      // API response formatı: {"response": {...}, "data": {...}}
       final data = response['data'];
       
-      // Save token
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(AppConstants.tokenKey, data['token']);
       
@@ -34,10 +32,8 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await _apiService.register(email, name, password);
       
-      // API response formatı: {"response": {...}, "data": {...}}
       final data = response['data'];
       
-      // Save token
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(AppConstants.tokenKey, data['token']);
       
@@ -64,7 +60,6 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _apiService.uploadPhoto(filePath);
       print('📋 Upload response structure: $response');
       
-      // Handle nested response structure
       final data = response['data'] ?? response;
       final photoUrl = data['photoUrl'];
       

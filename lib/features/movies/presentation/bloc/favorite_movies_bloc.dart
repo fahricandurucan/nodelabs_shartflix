@@ -3,12 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/entities/movie.dart';
 import '../../domain/repositories/movies_repository.dart';
 
-// Events
 abstract class FavoriteMoviesEvent {}
 
 class LoadFavoriteMovies extends FavoriteMoviesEvent {}
 
-// States
 abstract class FavoriteMoviesState {}
 
 class FavoriteMoviesInitial extends FavoriteMoviesState {}
@@ -25,7 +23,6 @@ class FavoriteMoviesError extends FavoriteMoviesState {
   FavoriteMoviesError(this.message);
 }
 
-// Bloc
 class FavoriteMoviesBloc extends Bloc<FavoriteMoviesEvent, FavoriteMoviesState> {
   final MoviesRepository moviesRepository;
 

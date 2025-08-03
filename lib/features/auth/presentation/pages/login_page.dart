@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 
@@ -84,42 +85,40 @@ class _LoginPageState extends State<LoginPage> {
         child: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.only(
-              left: 24.0,
-              right: 24.0,
-              top: 24.0,
-              bottom: 24.0 + MediaQuery.of(context).viewInsets.bottom,
+              left: 24.w,
+              right: 24.w,
+              top: 24.h,
+              bottom: 24.h + MediaQuery.of(context).viewInsets.bottom,
             ),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40.h),
 
-                  // Header Section
                   Text(
                     'login_title'.tr(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 32,
+                      fontSize: 32.sp,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
 
                   Text(
                     'login_subtitle'.tr(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       height: 1.5,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 48),
+                  SizedBox(height: 48.h),
 
-                  // Email Input
                   CustomTextField(
                     controller: _emailController,
                     hintText: 'email'.tr(),
@@ -135,9 +134,8 @@ class _LoginPageState extends State<LoginPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
 
-                  // Password Input
                   CustomTextField(
                     controller: _passwordController,
                     hintText: 'password'.tr(),
@@ -160,14 +158,12 @@ class _LoginPageState extends State<LoginPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
 
-                  // Forgot Password Link
                   Align(
                     alignment: Alignment.centerLeft,
                     child: TextButton(
                       onPressed: () {
-                        // TODO: Implement forgot password
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('forgot_password_message'.tr()),
@@ -183,9 +179,8 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32.h),
 
-                  // Login Button
                   ElevatedButton(
                     onPressed: _isLoading ? null : _handleLogin,
                     style: ElevatedButton.styleFrom(
@@ -197,32 +192,30 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     child: _isLoading
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
+                        ? SizedBox(
+                            height: 20.h,
+                            width: 20.w,
+                            child: const CircularProgressIndicator(
                               strokeWidth: 2,
                               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           )
                         : Text(
                             'login_button'.tr(),
-                            style: const TextStyle(
-                              fontSize: 16,
+                            style: TextStyle(
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32.h),
 
-                  // Social Login Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _buildSocialButton(
                         icon: 'G',
                         onTap: () {
-                          // TODO: Implement Google login
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('google_register'.tr()),
@@ -233,7 +226,6 @@ class _LoginPageState extends State<LoginPage> {
                       _buildSocialButton(
                         icon: 'A',
                         onTap: () {
-                          // TODO: Implement Apple login
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('apple_register'.tr()),
@@ -244,7 +236,6 @@ class _LoginPageState extends State<LoginPage> {
                       _buildSocialButton(
                         icon: 'f',
                         onTap: () {
-                          // TODO: Implement Facebook login
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('facebook_register'.tr()),
@@ -254,17 +245,16 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: 40.h),
 
-                  // Register Link
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         'no_account'.tr(),
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                         ),
                       ),
                       GestureDetector(
@@ -273,16 +263,16 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         child: Text(
                           'sign_up'.tr(),
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                 ],
               ),
             ),
@@ -299,26 +289,26 @@ class _LoginPageState extends State<LoginPage> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 60,
-        height: 60,
-        padding: icon == 'A' ? const EdgeInsets.all(16) : null,
+        width: 60.w,
+        height: 60.h,
+        padding: icon == 'A' ? EdgeInsets.all(16.w) : null,
         decoration: BoxDecoration(
           color: const Color(0xFF1F1F1F),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
         child: icon == 'A'
             ? Image.asset(
                 'assets/animations/apple.png',
-                width: 36,
-                height: 36,
+                width: 36.w,
+                height: 36.h,
                 color: Colors.white,
               )
             : Center(
                 child: Text(
                   icon,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 24,
+                    fontSize: 24.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -13,22 +13,18 @@ class MovieCard extends StatelessWidget {
   });
 
   String _getImageUrl(String originalUrl) {
-    // If URL is empty or null, return placeholder
     if (originalUrl.isEmpty) {
       return 'https://via.placeholder.com/300x200?text=No+Image';
     }
     
-    // If it's already HTTPS, return as is
     if (originalUrl.startsWith('https://')) {
       return originalUrl;
     }
     
-    // If it's HTTP, try to convert to HTTPS
     if (originalUrl.startsWith('http://')) {
       return originalUrl.replaceFirst('http://', 'https://');
     }
     
-    // If it's relative URL, add base URL
     if (originalUrl.startsWith('/')) {
       return 'https://image.tmdb.org/t/p/w500$originalUrl';
     }

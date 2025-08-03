@@ -26,22 +26,18 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
   double _dragOffset = 0.0;
 
   String _getImageUrl(String originalUrl) {
-    // If URL is empty or null, return placeholder
     if (originalUrl.isEmpty) {
       return 'https://via.placeholder.com/400x800?text=No+Image';
     }
     
-    // If it's already HTTPS, return as is
     if (originalUrl.startsWith('https://')) {
       return originalUrl;
     }
     
-    // If it's HTTP, try to convert to HTTPS
     if (originalUrl.startsWith('http://')) {
       return originalUrl.replaceFirst('http://', 'https://');
     }
     
-    // If it's relative URL, add base URL
     if (originalUrl.startsWith('/')) {
       return 'https://image.tmdb.org/t/p/w500$originalUrl';
     }
@@ -63,10 +59,8 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
       },
       onVerticalDragEnd: (details) {
         if (_dragOffset < -50 && widget.onNextMovie != null) {
-          // Swipe up - go to next movie
           widget.onNextMovie!();
         } else if (_dragOffset > 50 && widget.onPreviousMovie != null) {
-          // Swipe down - go to previous movie
           widget.onPreviousMovie!();
         }
         setState(() {
@@ -90,7 +84,6 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
           ),
           child: Stack(
             children: [
-              // Bottom gradient overlay
               Positioned(
                 bottom: 0,
                 left: 0,
@@ -111,9 +104,8 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
                 ),
               ),
               
-              // Favorite button (bottom right - Instagram style)
               Positioned(
-                bottom: 200, // Above navigation bar
+                bottom: 200,
                 right: 10,
                 child: GestureDetector(
                   onTap: widget.onFavoriteToggle,
@@ -140,7 +132,6 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
                 ),
               ),
               
-              // Movie info at bottom
               Positioned(
                 bottom: 50,
                 left: 0,
@@ -151,7 +142,6 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Netflix logo and title
                       Row(
                         children: [
                           Container(
@@ -187,9 +177,7 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
                           ),
                         ],
                       ),
-                      // const SizedBox(height: 12),
                       
-                      // Movie description with expandable text
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

@@ -20,11 +20,9 @@ class _DiscoverPageState extends State<DiscoverPage> {
   @override
   void initState() {
     super.initState();
-    // Load initial movies
     print('🎬 DiscoverPage: Initializing - loading first page');
     context.read<MoviesBloc>().add(const LoadMovies());
     
-    // Add scroll listener for infinite scroll
     _scrollController.addListener(_onScroll);
   }
 
@@ -107,7 +105,6 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   itemCount: state.movies.length + (state.hasReachedMax ? 0 : 1),
                   itemBuilder: (context, index) {
                     if (index == state.movies.length) {
-                      // Load more indicator
                       print('🔄 DiscoverPage: Showing load more indicator');
                       return  Padding(
                         padding: const EdgeInsets.all(16.0),

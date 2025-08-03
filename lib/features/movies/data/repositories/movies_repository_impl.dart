@@ -14,13 +14,11 @@ class MoviesRepositoryImpl implements MoviesRepository {
       print('🎬 Repository: Getting movies for page $page');
       final response = await _apiService.getMovieList(page: page);
 
-      // Debug: Print response structure
       print('📦 Repository Response for page $page:');
       print('   Response Type: ${response.runtimeType}');
       print('   Response Keys: ${response.keys.toList()}');
       print('   Full Response: $response');
 
-      // Handle different response structures
       List<dynamic> moviesData;
 
       if (response['data'] != null && response['data']['movies'] != null) {

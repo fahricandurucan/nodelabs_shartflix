@@ -7,7 +7,6 @@ import '../../data/repositories/movies_repository_impl.dart';
 import '../../domain/entities/movie.dart';
 import '../../domain/usecases/get_movies_usecase.dart';
 
-// Events
 abstract class MoviesEvent extends Equatable {
   const MoviesEvent();
 
@@ -37,7 +36,6 @@ class ToggleFavorite extends MoviesEvent {
 
 class LoadFavoriteMovies extends MoviesEvent {}
 
-// States
 abstract class MoviesState extends Equatable {
   const MoviesState();
 
@@ -92,7 +90,6 @@ class FavoriteMoviesLoaded extends MoviesState {
   List<Object?> get props => [favoriteMovies];
 }
 
-// BLoC
 class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   final GetMoviesUseCase _getMoviesUseCase;
   final MoviesRepositoryImpl _moviesRepository;
@@ -115,7 +112,6 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
   ) async {
     print('🎬 BLoC: Loading movies for page ${event.page}');
     
-    // Check if we're already loading this page
     if (_lastRequestedPage == event.page) {
       print('⏳ BLoC: Already loading page ${event.page}, skipping...');
       return;
@@ -161,7 +157,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     Emitter<MoviesState> emit,
   ) async {
     print('🔄 BLoC: Refreshing movies');
-    _lastRequestedPage = null; // Reset last requested page
+    _lastRequestedPage = null; 
     add(const LoadMovies(page: 0));
   }
 
@@ -199,7 +195,6 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
           hasReachedMax: currentState.hasReachedMax,
         ));
       } catch (e) {
-        // Handle error silently or show snackbar
       }
     }
   }

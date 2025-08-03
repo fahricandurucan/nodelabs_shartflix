@@ -25,7 +25,6 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // BLUR & DARK OVERLAY
         Positioned.fill(
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
@@ -34,11 +33,9 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
             ),
           ),
         ),
-        // SHEET
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            // margin: const EdgeInsets.only(top: 80),
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
               gradient: LinearGradient(
@@ -53,7 +50,6 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Header
                     Text(
                       widget.title,
                       style: const TextStyle(
@@ -73,7 +69,6 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 24),
-                    // Bonuslar
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
                       decoration: BoxDecoration(
@@ -106,7 +101,6 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    // Paketler
                     Text(
                       'select_token_package'.tr(),
                       style: const TextStyle(
@@ -160,7 +154,6 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
                       ],
                     ),
                     const SizedBox(height: 24),
-                    // Action Button
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -264,7 +257,6 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
         ),
         child: Column(
           children: [
-            // Bonus Tag
             Align(
               alignment: Alignment.topLeft,
               child: Container(
@@ -293,7 +285,6 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
                 decoration: TextDecoration.lineThrough,
               ),
             ),
-            // New Tokens
             Text(
               newTokens,
               style: const TextStyle(

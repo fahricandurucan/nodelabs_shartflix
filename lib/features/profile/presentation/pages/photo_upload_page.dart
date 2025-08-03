@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
@@ -234,7 +235,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: EdgeInsets.all(24.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -242,35 +243,35 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
             // Main Title
              Text(
               'upload_profile_photo'.tr(),
-              style: const TextStyle(
-                fontSize: 28,
+              style: TextStyle(
+                fontSize: 28.sp,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
 
             // Description Text
              Text(
               'upload_profile_photo_description'.tr(),
-              style: const TextStyle(
-                fontSize: 16,
+              style: TextStyle(
+                fontSize: 16.sp,
                 color: Colors.grey,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 48),
+            SizedBox(height: 48.h),
 
             // Photo Upload Area
             GestureDetector(
               onTap: _showImageSourceDialog,
               child: Container(
                 width: double.infinity,
-                height: 300,
+                height: 300.h,
                 decoration: BoxDecoration(
                   color: const Color(0xFF2A2A2A),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(20.r),
                   border: Border.all(
                     color: Colors.grey.shade600,
                     width: 2,
@@ -279,7 +280,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
                 ),
                 child: _selectedImage != null
                     ? ClipRRect(
-                        borderRadius: BorderRadius.circular(18),
+                        borderRadius: BorderRadius.circular(18.r),
                         child: Image.file(
                           _selectedImage!,
                           fit: BoxFit.cover,
@@ -291,65 +292,65 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            width: 80,
-                            height: 80,
+                            width: 80.w,
+                            height: 80.h,
                             decoration: BoxDecoration(
                               color: Colors.grey.shade700,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.add,
                               color: Colors.white,
-                              size: 40,
+                              size: 40.sp,
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16.h),
                            Text(
                             'add_photo'.tr(),
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(height: 8.h),
                            Text(
                             'select_from_camera_or_gallery'.tr(),
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.grey,
-                              fontSize: 14,
+                              fontSize: 14.sp,
                             ),
                           ),
                         ],
                       ),
               ),
             ),
-            const SizedBox(height: 48),
+            SizedBox(height: 48.h),
 
             // Continue Button
             ElevatedButton(
               onPressed: _isUploading ? null : _uploadPhoto,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.red,
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: EdgeInsets.symmetric(vertical: 16.h),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
               ),
               child: _isUploading
                   ?  Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: LoadingGifWidget(color: Colors.white,)
+                        SizedBox(
+                          width: 20.w,
+                          height: 20.h,
+                          child: const LoadingGifWidget(color: Colors.white,)
                         ),
-                        const SizedBox(width: 12),
+                        SizedBox(width: 12.w),
                         Text(
                           'loading'.tr(),
-                          style: const TextStyle(
-                            fontSize: 16,
+                          style: TextStyle(
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
@@ -358,8 +359,8 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
                     )
                   :  Text(
                       'upload_photo'.tr(),
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style: TextStyle(
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),

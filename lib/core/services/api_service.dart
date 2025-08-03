@@ -18,7 +18,6 @@ class ApiService {
     
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        // Add auth token if available
         final prefs = await SharedPreferences.getInstance();
         final token = prefs.getString(AppConstants.tokenKey);
         if (token != null) {
@@ -27,17 +26,14 @@ class ApiService {
         handler.next(options);
       },
       onError: (error, handler) {
-        // Handle common errors
         if (error.response?.statusCode == 401) {
-          // Token expired, redirect to login
-          // TODO: Handle token refresh or logout
+     
         }
         handler.next(error);
       },
     ));
   }
 
-  // Auth Methods
   Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       final response = await _dio.post(AppConstants.loginEndpoint, data: {
@@ -136,7 +132,6 @@ class ApiService {
     }
   }
 
-  // Error handling
   Exception _handleError(dynamic error) {
     if (error is DioException) {
       switch (error.type) {
@@ -148,7 +143,6 @@ class ApiService {
           final statusCode = error.response?.statusCode;
           final responseData = error.response?.data;
           
-          // API'den gelen hata mesajını al
           String message = 'Bir hata oluştu';
           if (responseData != null) {
             if (responseData['response'] != null) {

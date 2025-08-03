@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/pages/login_page.dart';
@@ -26,21 +27,19 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   @override
   Widget build(BuildContext context) {
-    // Listen to localization changes to rebuild the widget
     EasyLocalization.of(context)?.locale;
     
     return Scaffold(
       backgroundColor: Colors.black,
       body: widget.child,
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.h),
         decoration: const BoxDecoration(
           color: Colors.black,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            // Home Tab
             GestureDetector(
               onTap: () {
                 if (widget.currentIndex != 0) {
@@ -48,10 +47,10 @@ class _MainLayoutState extends State<MainLayout> {
                 }
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
                 decoration: BoxDecoration(
                   color: widget.currentIndex == 0 ? const Color(0xFFE50914) : Colors.black,
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(25.r),
                   border: Border.all(
                     color: widget.currentIndex == 0 ? const Color(0xFFE50914) : Colors.white,
                     width: 1.5,
@@ -63,14 +62,14 @@ class _MainLayoutState extends State<MainLayout> {
                     Icon(
                       widget.currentIndex == 0 ? Icons.home : Icons.home_outlined,
                       color: Colors.white,
-                      size: 20,
+                      size: 20.sp,
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8.w),
                     Text(
                       'home'.tr(),
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: widget.currentIndex == 0 ? FontWeight.w600 : FontWeight.w500,
                       ),
                     ),
@@ -78,7 +77,6 @@ class _MainLayoutState extends State<MainLayout> {
                 ),
               ),
             ),
-            // Profile Tab
             GestureDetector(
               onTap: () {
                 if (widget.currentIndex != 1) {
@@ -86,10 +84,10 @@ class _MainLayoutState extends State<MainLayout> {
                 }
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
                 decoration: BoxDecoration(
                   color: widget.currentIndex == 1 ? const Color(0xFFE50914) : Colors.black,
-                  borderRadius: BorderRadius.circular(25),
+                  borderRadius: BorderRadius.circular(25.r),
                   border: Border.all(
                     color: widget.currentIndex == 1 ? const Color(0xFFE50914) : Colors.white,
                     width: 1.5,
@@ -98,17 +96,17 @@ class _MainLayoutState extends State<MainLayout> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.person,
                       color: Colors.white,
-                      size: 20,
+                      size: 20.sp,
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8.w),
                     Text(
                       'profile'.tr(),
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 14.sp,
                         fontWeight: widget.currentIndex == 1 ? FontWeight.w600 : FontWeight.w500,
                       ),
                     ),

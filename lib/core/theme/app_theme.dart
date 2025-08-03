@@ -5,7 +5,7 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color(0xFFE50914), // Netflix red
+        seedColor: const Color(0xFFE50914),
         brightness: Brightness.light,
       ),
       appBarTheme: const AppBarTheme(

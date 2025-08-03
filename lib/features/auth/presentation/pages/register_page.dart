@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 
@@ -62,7 +63,6 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _handlePhotoUploaded() {
-    // Photo was uploaded successfully, now proceed with registration
     _handleRegister();
   }
 
@@ -106,42 +106,37 @@ class _RegisterPageState extends State<RegisterPage> {
         child: SafeArea(
           child: SingleChildScrollView(
             padding: EdgeInsets.only(
-              left: 24.0,
-              right: 24.0,
-              top: 24.0,
-              bottom: 24.0 + MediaQuery.of(context).viewInsets.bottom,
+              left: 24.w,
+              right: 24.w,
+              top: 24.h,
+              bottom: 24.h + MediaQuery.of(context).viewInsets.bottom,
             ),
             child: Form(
               key: _formKey,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 40),
-
-                  // Header Section
+                  SizedBox(height: 40.h),
                   Text(
                     'register_title'.tr(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 32,
+                      fontSize: 32.sp,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 16),
-
+                  SizedBox(height: 16.h),
                   Text(
                     'register_subtitle'.tr(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       height: 1.5,
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 48),
-
-                  // Name Input
+                  SizedBox(height: 48.h),
                   CustomTextField(
                     controller: _nameController,
                     hintText: 'full_name'.tr(),
@@ -156,9 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
-
-                  // Email Input
+                  SizedBox(height: 16.h),
                   CustomTextField(
                     controller: _emailController,
                     hintText: 'email'.tr(),
@@ -174,9 +167,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
-
-                  // Password Input
+                  SizedBox(height: 16.h),
                   CustomTextField(
                     controller: _passwordController,
                     hintText: 'password'.tr(),
@@ -199,9 +190,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 16),
-
-                  // Confirm Password Input
+                  SizedBox(height: 16.h),
                   CustomTextField(
                     controller: _confirmPasswordController,
                     hintText: 'confirm_password'.tr(),
@@ -224,8 +213,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 24),
-                  // Terms and Conditions
+                  SizedBox(height: 24.h),
                   Row(
                     children: [
                       Checkbox(
@@ -245,9 +233,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                           child: RichText(
                             text: TextSpan(
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 14,
+                                fontSize: 14.sp,
                               ),
                               children: [
                                 TextSpan(text: 'terms_agreement_part1'.tr()),
@@ -266,9 +254,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 32),
-
-                  // Register Button
+                  SizedBox(height: 32.h),
                   ElevatedButton(
                     onPressed: _isLoading ? null : _handleRegister,
                     style: ElevatedButton.styleFrom(
@@ -280,24 +266,23 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     child: _isLoading
-                        ? const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
+                        ? SizedBox(
+                            height: 20.h,
+                            width: 20.w,
+                            child: const CircularProgressIndicator(
                               strokeWidth: 2,
                               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           )
                         : Text(
                             'register_button'.tr(),
-                            style: const TextStyle(
-                              fontSize: 16,
+                            style: TextStyle(
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                   ),
-                  const SizedBox(height: 32),
-
+                  SizedBox(height: 32.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -324,7 +309,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       _buildSocialButton(
                         icon: 'f',
                         onTap: () {
-                          // TODO: Implement Facebook register
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('facebook_register'.tr()),
@@ -334,17 +318,15 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 40),
-
-                  // Login Link
+                  SizedBox(height: 40.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         'has_account'.tr(),
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                         ),
                       ),
                       GestureDetector(
@@ -353,16 +335,16 @@ class _RegisterPageState extends State<RegisterPage> {
                         },
                         child: Text(
                           'login_link'.tr(),
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: 24.h),
                 ],
               ),
             ),
@@ -380,18 +362,18 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: const Color(0xFF2A2A2A),
           title: Text(
             'terms_title'.tr(),
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
-              fontSize: 18,
+              fontSize: 18.sp,
               fontWeight: FontWeight.bold,
             ),
           ),
           content: SingleChildScrollView(
             child: Text(
               'terms_content'.tr(),
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
-                fontSize: 14,
+                fontSize: 14.sp,
                 height: 1.5,
               ),
             ),
@@ -403,9 +385,9 @@ class _RegisterPageState extends State<RegisterPage> {
               },
               child: Text(
                 'terms_close'.tr(),
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                 ),
               ),
             ),
@@ -419,14 +401,14 @@ class _RegisterPageState extends State<RegisterPage> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.red,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
               ),
               child: Text(
                 'terms_accept'.tr(),
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -444,26 +426,26 @@ class _RegisterPageState extends State<RegisterPage> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 60,
-        height: 60,
-        padding: icon == 'A' ? const EdgeInsets.all(16) : null,
+        width: 60.w,
+        height: 60.h,
+        padding: icon == 'A' ? EdgeInsets.all(16.w) : null,
         decoration: BoxDecoration(
           color: const Color(0xFF1F1F1F),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(8.r),
         ),
         child: icon == 'A'
             ? Image.asset(
                 'assets/animations/apple.png',
-                width: 36,
-                height: 36,
+                width: 36.w,
+                height: 36.h,
                 color: Colors.white,
               )
             : Center(
                 child: Text(
                   icon,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 24,
+                    fontSize: 24.sp,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

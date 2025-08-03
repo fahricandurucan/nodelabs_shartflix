@@ -7,7 +7,6 @@ import '../../domain/entities/user.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/register_usecase.dart';
 
-// Events
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
 
@@ -58,7 +57,6 @@ class UploadPhotoRequested extends AuthEvent {
   List<Object?> get props => [filePath];
 }
 
-// States
 abstract class AuthState extends Equatable {
   const AuthState();
 
@@ -112,7 +110,6 @@ class PhotoUploaded extends AuthState {
   List<Object?> get props => [photoUrl];
 }
 
-// BLoC
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUseCase _loginUseCase;
   final RegisterUseCase _registerUseCase;
@@ -209,16 +206,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final photoUrl = await _authRepository.uploadPhoto(event.filePath);
       print('✅ Auth Bloc: Photo uploaded successfully: $photoUrl');
       
-      // Get fresh user data from API to ensure we have the latest info
       print('🔄 Auth Bloc: Fetching updated user profile...');
       final updatedUser = await _authRepository.getProfile();
       print('✅ Auth Bloc: Updated user profile: ${updatedUser.name} - ${updatedUser.profileImage}');
       
-      // Emit the photo uploaded state for the upload page first
       emit(PhotoUploaded(photoUrl));
       print('✅ Auth Bloc: Emitted PhotoUploaded state');
       
-      // Then emit the updated authenticated state with fresh user data
       emit(Authenticated(updatedUser));
       print('✅ Auth Bloc: Emitted Authenticated state with updated user');
     } catch (e) {

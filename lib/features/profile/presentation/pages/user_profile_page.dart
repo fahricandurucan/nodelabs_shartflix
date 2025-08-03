@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 import 'package:nodelabs_shartflix/features/auth/presentation/widgets/loading_gif_widget.dart';
@@ -47,13 +48,13 @@ class _UserProfileViewState extends State<_UserProfileView> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Container(
-          margin: const EdgeInsets.all(8),
+          margin: EdgeInsets.all(8.w),
           decoration: BoxDecoration(
             color: Colors.grey.shade800,
             shape: BoxShape.circle,
           ),
           child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            icon: Icon(Icons.arrow_back, color: Colors.white, size: 20.sp),
             onPressed: () {
               context.go('/discover');
             },
@@ -61,9 +62,9 @@ class _UserProfileViewState extends State<_UserProfileView> {
         ),
         title: Text(
           'profile_title'.tr(),
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
-            fontSize: 18,
+            fontSize: 18.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -72,9 +73,9 @@ class _UserProfileViewState extends State<_UserProfileView> {
                   LanguageSelector(
                     onLocaleChanged: () => setState(() {}),
                   ),
-                  Container(
-            margin: const EdgeInsets.all(8),
-            child: ElevatedButton(
+                                    Container(
+                    margin: EdgeInsets.all(8.w),
+                    child: ElevatedButton(
               onPressed: () {
                 showModalBottomSheet(
                   context: context,
@@ -96,21 +97,21 @@ class _UserProfileViewState extends State<_UserProfileView> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.red,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(20.r),
                 ),
               ),
               child:  Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(Icons.diamond, color: Colors.white, size: 16),
-                  const SizedBox(width: 4),
+                  Icon(Icons.diamond, color: Colors.white, size: 16.sp),
+                  SizedBox(width: 4.w),
                   Text(
                     'limited_offer'.tr(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -132,7 +133,7 @@ class _UserProfileViewState extends State<_UserProfileView> {
                 // Scrollable Content
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(24),
+                    padding: EdgeInsets.all(24.w),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -141,8 +142,8 @@ class _UserProfileViewState extends State<_UserProfileView> {
                           children: [
                             // Profile Image
                             Container(
-                              width: 80,
-                              height: 80,
+                              width: 80.w,
+                              height: 80.h,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: state.user.profileImage != null
@@ -161,16 +162,16 @@ class _UserProfileViewState extends State<_UserProfileView> {
                                         state.user.name.isNotEmpty
                                             ? state.user.name[0].toUpperCase()
                                             : 'U',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: Colors.white,
-                                          fontSize: 32,
+                                          fontSize: 32.sp,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     )
                                   : null,
                             ),
-                            const SizedBox(width: 16),
+                            SizedBox(width: 16.w),
 
                             // User Info
                             Expanded(
@@ -179,26 +180,26 @@ class _UserProfileViewState extends State<_UserProfileView> {
                                 children: [
                                   Text(
                                     state.user.name,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 20,
+                                      fontSize: 20.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
+                                  SizedBox(height: 4.h),
                                                               Text(
                               '${'user_id'.tr()}: ${state.user.id}',
                               style: TextStyle(
                                 color: Colors.grey.shade400,
-                                fontSize: 14,
+                                fontSize: 14.sp,
                               ),
                             ),
-                                  const SizedBox(height: 4),
+                                  SizedBox(height: 4.h),
                                   Text(
                                     state.user.email,
                                     style: TextStyle(
                                       color: Colors.grey.shade400,
-                                      fontSize: 14,
+                                      fontSize: 14.sp,
                                     ),
                                   ),
                                 ],
@@ -212,16 +213,16 @@ class _UserProfileViewState extends State<_UserProfileView> {
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.red,
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(20.r),
                                 ),
                               ),
                                                       child: Text(
                           'add_photo'.tr(),
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -229,18 +230,18 @@ class _UserProfileViewState extends State<_UserProfileView> {
                           ],
                         ),
 
-                        const SizedBox(height: 32),
+                        SizedBox(height: 32.h),
 
                         // Liked Movies Section
                         Text(
                           'favorite_movies'.tr(),
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 20.sp,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(height: 16.h),
                         BlocBuilder<favorite_bloc.FavoriteMoviesBloc,
                             favorite_bloc.FavoriteMoviesState>(
                           builder: (context, movieState) {
@@ -249,19 +250,19 @@ class _UserProfileViewState extends State<_UserProfileView> {
                               if (favorites.isEmpty) {
                                 return Center(
                                   child: Container(
-                                    padding: const EdgeInsets.all(8),
-                                    height: 200,
+                                    padding: EdgeInsets.all(8.w),
+                                    height: 200.h,
                                     width: double.infinity,
                                     decoration: BoxDecoration(
                                       color: const Color.fromARGB(255, 60, 60, 60),
-                                      borderRadius: BorderRadius.circular(12),
+                                      borderRadius: BorderRadius.circular(12.r),
                                     ),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         // Lottie Animation
                                         SizedBox(
-                                          height: 100,
+                                          height: 100.h,
                                           // decoration: BoxDecoration(
                                           //   color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.5),
                                           //   borderRadius: BorderRadius.circular(12),
@@ -272,28 +273,28 @@ class _UserProfileViewState extends State<_UserProfileView> {
                                             fit: BoxFit.contain,
                                             errorBuilder: (context, error, stackTrace) {
                                               print(error.toString());
-                                              return const Icon(
+                                              return Icon(
                                                 Icons.movie_outlined,
                                                 color: Colors.grey,
-                                                size: 60,
+                                                size: 60.sp,
                                               );
                                             },
                                           ),
                                         ),
-                                        const SizedBox(height: 16),
+                                        SizedBox(height: 16.h),
                                         Text(
                                           'no_favorites'.tr(),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Colors.grey,
-                                            fontSize: 16,
+                                            fontSize: 16.sp,
                                           ),
                                         ),
-                                        const SizedBox(height: 8),
+                                        SizedBox(height: 8.h),
                                         Text(
                                           'no_favorites_subtitle'.tr(),
                                           style: TextStyle(
                                             color: Colors.grey.shade600,
-                                            fontSize: 14,
+                                            fontSize: 14.sp,
                                           ),
                                           textAlign: TextAlign.center,
                                         ),
@@ -336,10 +337,10 @@ class _UserProfileViewState extends State<_UserProfileView> {
                               );
                             } else if (movieState is favorite_bloc.FavoriteMoviesError) {
                               return Container(
-                                height: 200,
+                                height: 200.h,
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF2A2A2A),
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(12.r),
                                 ),
                                 child: Center(
                                   child: Text(
@@ -350,10 +351,10 @@ class _UserProfileViewState extends State<_UserProfileView> {
                               );
                             } else if (movieState is favorite_bloc.FavoriteMoviesLoading) {
                               return Container(
-                                height: 200,
+                                height: 200.h,
                                 decoration: BoxDecoration(
                                   color: const Color(0xFF2A2A2A),
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(12.r),
                                 ),
                                 child: const Center(
                                   child: LoadingGifWidget(),
@@ -370,7 +371,7 @@ class _UserProfileViewState extends State<_UserProfileView> {
 
                 // Fixed Logout Button at Bottom
                 Container(
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(24.w),
                   child: SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
@@ -382,17 +383,17 @@ class _UserProfileViewState extends State<_UserProfileView> {
                               backgroundColor: const Color(0xFF2A2A2A),
                               title: Text(
                                 'logout_confirmation_title'.tr(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 18,
+                                  fontSize: 18.sp,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               content: Text(
                                 'logout_confirmation_message'.tr(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 16,
+                                  fontSize: 16.sp,
                                 ),
                               ),
                               actions: [
@@ -402,9 +403,9 @@ class _UserProfileViewState extends State<_UserProfileView> {
                                   },
                                   child: Text(
                                     'logout_cancel'.tr(),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.grey,
-                                      fontSize: 16,
+                                      fontSize: 16.sp,
                                     ),
                                   ),
                                 ),
@@ -417,14 +418,14 @@ class _UserProfileViewState extends State<_UserProfileView> {
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: AppColors.red,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius: BorderRadius.circular(8.r),
                                     ),
                                   ),
                                   child: Text(
                                     'logout_confirm'.tr(),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 16,
+                                      fontSize: 16.sp,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -436,16 +437,16 @@ class _UserProfileViewState extends State<_UserProfileView> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.red,
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
                       ),
                       child: Text(
                         'logout'.tr(),
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

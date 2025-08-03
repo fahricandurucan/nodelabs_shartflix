@@ -16,9 +16,7 @@ class LanguageSelector extends StatelessWidget {
       ),
             onSelected: (Locale locale) async {
         await context.setLocale(locale);
-        // Call callback if provided
         onLocaleChanged?.call();
-        // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(

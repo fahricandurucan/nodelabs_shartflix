@@ -22,7 +22,6 @@ class _SplashPageState extends State<SplashPage>
   void initState() {
     super.initState();
     
-    // Animation setup
     _animationController = AnimationController(
       duration: const Duration(seconds: 2),
       vsync: this,
@@ -44,10 +43,8 @@ class _SplashPageState extends State<SplashPage>
       curve: Curves.elasticOut,
     ));
     
-    // Start animation
     _animationController.forward();
     
-    // Check auth status after animation
     Future.delayed(const Duration(seconds: 2), () {
       context.read<AuthBloc>().add(CheckAuthStatus());
     });
@@ -84,7 +81,6 @@ class _SplashPageState extends State<SplashPage>
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Netflix-style logo
                       Container(
                         width: 120,
                         height: 120,
@@ -105,7 +101,6 @@ class _SplashPageState extends State<SplashPage>
                       ),
                       const SizedBox(height: 24),
                       
-                      // App name
                       const Text(
                         'ShartFlix',
                         style: TextStyle(
@@ -116,7 +111,6 @@ class _SplashPageState extends State<SplashPage>
                       ),
                       const SizedBox(height: 8),
                       
-                      // Tagline
                       const Text(
                         'Film dünyasına hoş geldiniz',
                         style: TextStyle(
@@ -126,7 +120,6 @@ class _SplashPageState extends State<SplashPage>
                       ),
                       const SizedBox(height: 48),
                       
-                      // Loading indicator
                       const LoadingGifWidget(color: Color(0xFFE50914),)
                     ],
                   ),

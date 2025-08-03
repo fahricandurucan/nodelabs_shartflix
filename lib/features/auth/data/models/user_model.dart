@@ -23,7 +23,7 @@ class UserModel extends User {
       email: json['email'] ?? '',
       name: json['name'] ?? '',
       profileImage: json['photoUrl'] ?? '',
-      createdAt: DateTime.now(), // API'den gelmiyorsa şimdiki zaman
+      createdAt: DateTime.now(), 
     );
   }
 } 
