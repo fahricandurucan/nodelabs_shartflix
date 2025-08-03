@@ -26,6 +26,9 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   @override
   Widget build(BuildContext context) {
+    // Listen to localization changes to rebuild the widget
+    EasyLocalization.of(context)?.locale;
+    
     return Scaffold(
       backgroundColor: Colors.black,
       body: widget.child,

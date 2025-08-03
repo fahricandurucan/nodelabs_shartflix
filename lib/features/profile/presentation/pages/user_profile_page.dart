@@ -89,8 +89,7 @@ class _UserProfileViewState extends State<_UserProfileView> {
                     ),
                     child: LimitedOfferBottomSheet(
                       title: 'limited_offer'.tr(),
-                      description:
-                          'Jeton paketin\'ni seçerek bonus kazanın ve yeni bölümlerin kilidini açın!',
+                      description: 'limited_offer_description'.tr(),
                     ),
                   ),
                 );
@@ -376,8 +375,64 @@ class _UserProfileViewState extends State<_UserProfileView> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        context.read<AuthBloc>().add(LogoutRequested());
-                        context.go('/login');
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              backgroundColor: const Color(0xFF2A2A2A),
+                              title: Text(
+                                'logout_confirmation_title'.tr(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              content: Text(
+                                'logout_confirmation_message'.tr(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'logout_cancel'.tr(),
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    context.read<AuthBloc>().add(LogoutRequested());
+                                    context.go('/login');
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.red,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'logout_confirm'.tr(),
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.red,
@@ -400,10 +455,10 @@ class _UserProfileViewState extends State<_UserProfileView> {
               ],
             );
           } else {
-            return const Center(
+            return Center(
               child: Text(
-                'Kullanıcı bilgileri yüklenemedi',
-                style: TextStyle(color: Colors.white),
+                'profile_failed'.tr(),
+                style: const TextStyle(color: Colors.white),
               ),
             );
           }

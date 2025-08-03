@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 
@@ -64,7 +65,7 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      widget.description,
+                      'limited_offer_description'.tr(),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 15,
@@ -81,22 +82,24 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
                       ),
                       child: Column(
                         children: [
-                          const Text(
-                            'Alacağınız Bonuslar',
-                            style: TextStyle(
+                          Text(
+                            'bonuses_you_will_get'.tr(),
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 12),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          Wrap(
+                            spacing: 16,
+                            runSpacing: 16,
+                            alignment: WrapAlignment.center,
                             children: [
-                              _buildBonusItem(Icons.diamond, 'Premium Hesap'),
-                              _buildBonusItem(Icons.favorite, 'Daha Fazla Eşleşme'),
-                              _buildBonusItem(Icons.trending_up, 'Öne Çıkarma'),
-                              _buildBonusItem(Icons.thumb_up, 'Daha Fazla Beğeni'),
+                              _buildBonusItem(Icons.diamond, 'premium_account'.tr()),
+                              _buildBonusItem(Icons.favorite, 'more_matches'.tr()),
+                              _buildBonusItem(Icons.trending_up, 'featured'.tr()),
+                              _buildBonusItem(Icons.thumb_up, 'more_likes'.tr()),
                             ],
                           ),
                         ],
@@ -104,9 +107,9 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
                     ),
                     const SizedBox(height: 24),
                     // Paketler
-                    const Text(
-                      'Kilidi açmak için bir jeton paketi seçin',
-                      style: TextStyle(
+                    Text(
+                      'select_token_package'.tr(),
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
@@ -164,9 +167,9 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
                         onPressed: () {
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Seçilen paket:  {selectedPackageIndex + 1}. Paket satın alınıyor...'),
-                              backgroundColor: Color(0xFFE50914),
+                            SnackBar(
+                              content: Text('package_selected'.tr(args: ['${selectedPackageIndex + 1}'])),
+                              backgroundColor: const Color(0xFFE50914),
                             ),
                           );
                         },
@@ -177,9 +180,9 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        child: const Text(
-                          'Tüm Jetonları Gör',
-                          style: TextStyle(
+                        child: Text(
+                          'view_all_tokens'.tr(),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -299,9 +302,9 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Text(
-              'Jeton',
-              style: TextStyle(
+            Text(
+              'tokens'.tr(),
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 11,
               ),
@@ -316,9 +319,9 @@ class _LimitedOfferBottomSheetState extends State<LimitedOfferBottomSheet> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const Text(
-              'Başına haftalık',
-              style: TextStyle(
+            Text(
+              'per_week'.tr(),
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 9,
               ),
