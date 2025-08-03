@@ -19,6 +19,10 @@
   "confirm_password_required": "Password confirmation is required",
   "passwords_not_match": "Passwords do not match",
   "terms_text": "I have read and accept the user agreement. Please read this agreement to continue.",
+  "terms_title": "User Agreement",
+  "terms_content": "This user agreement defines the rules and conditions you must follow while using the ShartFlix platform.\n\n1. Account Security: You are responsible for the security of your account.\n2. Content Usage: You must use the content on the platform within legal limits.\n3. Privacy: Your personal data will be protected securely.\n4. Usage Rules: Do not misuse the platform.\n5. Changes: This agreement may be updated from time to time.\n\nBy accepting this agreement, you agree to the above conditions.",
+  "terms_accept": "I Accept",
+  "terms_close": "Close",
   "register_button": "Sign Up Now",
   "google_register": "Google sign up will be available soon",
   "apple_register": "Apple sign up will be available soon",
@@ -80,5 +84,13 @@
   "terms_agreement_part1": "I have read the user agreement ",
   "terms_agreement_part2": "and I accept it.",
   "please_read_terms": " Please read the agreement before continuing.",
-  "login_subtitle": "Welcome back! Please sign in to continue."
+  "login_subtitle": "Welcome back! Please sign in to continue.",
+  "photo_upload_optional": "Add Photo (Optional)",
+  "photo_upload_required": "Add Photo (Required)",
+  "skip_photo": "Skip Photo",
+  "photo_upload_success": "Photo uploaded successfully!",
+  "photo_upload_error": "Error occurred while uploading photo",
+  "photo_selection_error": "Error occurred while selecting photo",
+  "camera_error": "Camera error",
+  "please_select_photo": "Please select a photo first"
 }

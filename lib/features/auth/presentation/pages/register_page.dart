@@ -39,8 +39,8 @@ class _RegisterPageState extends State<RegisterPage> {
     if (_formKey.currentState!.validate()) {
       if (!_acceptedTerms) {
         ScaffoldMessenger.of(context).showSnackBar(
-           SnackBar(
-            content: const Text('Kullanıcı sözleşmesini kabul etmelisiniz'),
+          SnackBar(
+            content: Text('${'terms_agreement_part1'.tr()} ${'terms_agreement_part2'.tr()}'),
             backgroundColor: AppColors.red,
           ),
         );
@@ -52,13 +52,18 @@ class _RegisterPageState extends State<RegisterPage> {
       });
 
       context.read<AuthBloc>().add(
-        RegisterRequested(
-          name: _nameController.text.trim(),
-          email: _emailController.text.trim(),
-          password: _passwordController.text,
-        ),
-      );
+            RegisterRequested(
+              name: _nameController.text.trim(),
+              email: _emailController.text.trim(),
+              password: _passwordController.text,
+            ),
+          );
     }
+  }
+
+  void _handlePhotoUploaded() {
+    // Photo was uploaded successfully, now proceed with registration
+    _handleRegister();
   }
 
   @override
@@ -106,7 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(height: 40),
-                  
+
                   // Header Section
                   Text(
                     'register_title'.tr(),
@@ -118,7 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
-                  
+
                   Text(
                     'register_subtitle'.tr(),
                     style: const TextStyle(
@@ -129,7 +134,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 48),
-                  
+
                   // Name Input
                   CustomTextField(
                     controller: _nameController,
@@ -146,7 +151,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Email Input
                   CustomTextField(
                     controller: _emailController,
@@ -164,15 +169,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Password Input
                   CustomTextField(
                     controller: _passwordController,
                     hintText: 'password'.tr(),
                     prefixIcon: Icons.lock_outline,
-                    suffixIcon: _isPasswordVisible 
-                        ? Icons.visibility_off 
-                        : Icons.visibility,
+                    suffixIcon: _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
                     isPassword: true,
                     isPasswordVisible: _isPasswordVisible,
                     onSuffixIconTap: () {
@@ -191,15 +194,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Confirm Password Input
                   CustomTextField(
                     controller: _confirmPasswordController,
                     hintText: 'confirm_password'.tr(),
                     prefixIcon: Icons.lock_outline,
-                    suffixIcon: _isConfirmPasswordVisible 
-                        ? Icons.visibility_off 
-                        : Icons.visibility,
+                    suffixIcon: _isConfirmPasswordVisible ? Icons.visibility_off : Icons.visibility,
                     isPassword: true,
                     isPasswordVisible: _isConfirmPasswordVisible,
                     onSuffixIconTap: () {
@@ -218,7 +219,6 @@ class _RegisterPageState extends State<RegisterPage> {
                     },
                   ),
                   const SizedBox(height: 24),
-                  
                   // Terms and Conditions
                   Row(
                     children: [
@@ -233,30 +233,35 @@ class _RegisterPageState extends State<RegisterPage> {
                         checkColor: Colors.white,
                       ),
                       Expanded(
-                        child: RichText(
-                          text:  TextSpan(
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                            ),
-                            children: [
-                               TextSpan(text: 'terms_agreement_part1'.tr()),
-                              TextSpan(
-                                text: 'terms_agreement_part2'.tr(),
-                                style: TextStyle(
-                                  decoration: TextDecoration.underline,
-                                  color: AppColors.red,
-                                ),
+                        child: GestureDetector(
+                          onTap: () {
+                            _showTermsDialog();
+                          },
+                          child: RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
                               ),
-                               TextSpan(text: 'please_read_terms'.tr()),
-                            ],
+                              children: [
+                                TextSpan(text: 'terms_agreement_part1'.tr()),
+                                TextSpan(
+                                  text: 'terms_agreement_part2'.tr(),
+                                  style: TextStyle(
+                                    decoration: TextDecoration.underline,
+                                    color: AppColors.red,
+                                  ),
+                                ),
+                                TextSpan(text: 'please_read_terms'.tr()),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 32),
-                  
+
                   // Register Button
                   ElevatedButton(
                     onPressed: _isLoading ? null : _handleRegister,
@@ -277,7 +282,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           )
-                        :  Text(
+                        : Text(
                             'register_button'.tr(),
                             style: const TextStyle(
                               fontSize: 16,
@@ -286,29 +291,26 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                   ),
                   const SizedBox(height: 32),
-                  
-                  // Social Login Buttons
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _buildSocialButton(
                         icon: 'G',
                         onTap: () {
-                          // TODO: Implement Google register
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Google ile kayıt yakında eklenecek'),
+                            SnackBar(
+                              content: Text('google_register'.tr()),
                             ),
                           );
                         },
                       ),
                       _buildSocialButton(
-                        icon: '🍎',
+                        icon: 'A',
                         onTap: () {
-                          // TODO: Implement Apple register
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Apple ile kayıt yakında eklenecek'),
+                            SnackBar(
+                              content: Text('apple_register'.tr()),
                             ),
                           );
                         },
@@ -318,8 +320,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         onTap: () {
                           // TODO: Implement Facebook register
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Facebook ile kayıt yakında eklenecek'),
+                            SnackBar(
+                              content: Text('facebook_register'.tr()),
                             ),
                           );
                         },
@@ -327,12 +329,12 @@ class _RegisterPageState extends State<RegisterPage> {
                     ],
                   ),
                   const SizedBox(height: 40),
-                  
+
                   // Login Link
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                       Text(
+                      Text(
                         'has_account'.tr(),
                         style: const TextStyle(
                           color: Colors.grey,
@@ -364,6 +366,71 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
+  void _showTermsDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF2A2A2A),
+          title: Text(
+            'terms_title'.tr(),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Text(
+              'terms_content'.tr(),
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                height: 1.5,
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'terms_close'.tr(),
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _acceptedTerms = true;
+                });
+                Navigator.of(context).pop();
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text(
+                'terms_accept'.tr(),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget _buildSocialButton({
     required String icon,
     required VoidCallback onTap,
@@ -373,21 +440,29 @@ class _RegisterPageState extends State<RegisterPage> {
       child: Container(
         width: 60,
         height: 60,
+        padding: icon == 'A' ? const EdgeInsets.all(16) : null,
         decoration: BoxDecoration(
           color: const Color(0xFF1F1F1F),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Center(
-          child: Text(
-            icon,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        child: icon == 'A'
+            ? Image.asset(
+                'assets/animations/apple.png',
+                width: 36,
+                height: 36,
+                color: Colors.white,
+              )
+            : Center(
+                child: Text(
+                  icon,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
       ),
     );
   }
-} 
+}

@@ -34,13 +34,13 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _isLoading = true;
       });
-      
+
       context.read<AuthBloc>().add(
-        LoginRequested(
-          email: _emailController.text.trim(),
-          password: _passwordController.text,
-        ),
-      );
+            LoginRequested(
+              email: _emailController.text.trim(),
+              password: _passwordController.text,
+            ),
+          );
     }
   }
 
@@ -89,20 +89,20 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Spacer(),
-                  
-                                     // Header Section
-                   Text(
-                     'login_title'.tr(),
-                     style: const TextStyle(
-                       color: Colors.white,
-                       fontSize: 32,
-                       fontWeight: FontWeight.bold,
-                     ),
-                     textAlign: TextAlign.center,
-                   ),
+
+                  // Header Section
+                  Text(
+                    'login_title'.tr(),
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                   const SizedBox(height: 16),
-                  
-                   Text(
+
+                  Text(
                     'login_subtitle'.tr(),
                     style: const TextStyle(
                       color: Colors.white,
@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 48),
-                  
+
                   // Email Input
                   CustomTextField(
                     controller: _emailController,
@@ -124,21 +124,19 @@ class _LoginPageState extends State<LoginPage> {
                         return 'email_required'.tr();
                       }
                       if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                        return 'Geçerli bir e-posta adresi girin';
+                        return 'email_invalid'.tr();
                       }
                       return null;
                     },
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Password Input
                   CustomTextField(
                     controller: _passwordController,
                     hintText: 'password'.tr(),
                     prefixIcon: Icons.lock_outline,
-                    suffixIcon: _isPasswordVisible 
-                        ? Icons.visibility_off 
-                        : Icons.visibility,
+                    suffixIcon: _isPasswordVisible ? Icons.visibility_off : Icons.visibility,
                     isPassword: true,
                     isPasswordVisible: _isPasswordVisible,
                     onSuffixIconTap: () {
@@ -157,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  
+
                   // Forgot Password Link
                   Align(
                     alignment: Alignment.centerLeft,
@@ -165,12 +163,12 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         // TODO: Implement forgot password
                         ScaffoldMessenger.of(context).showSnackBar(
-                           SnackBar(
+                          SnackBar(
                             content: Text('forgot_password_message'.tr()),
                           ),
                         );
                       },
-                      child:  Text(
+                      child: Text(
                         'forgot_password'.tr(),
                         style: const TextStyle(
                           color: Colors.white,
@@ -180,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  
+
                   // Login Button
                   ElevatedButton(
                     onPressed: _isLoading ? null : _handleLogin,
@@ -201,7 +199,7 @@ class _LoginPageState extends State<LoginPage> {
                               valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           )
-                        :  Text(
+                        : Text(
                             'login_button'.tr(),
                             style: const TextStyle(
                               fontSize: 16,
@@ -210,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                   ),
                   const SizedBox(height: 32),
-                  
+
                   // Social Login Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -220,19 +218,19 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () {
                           // TODO: Implement Google login
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Google ile giriş yakında eklenecek'),
+                            SnackBar(
+                              content: Text('google_register'.tr()),
                             ),
                           );
                         },
                       ),
                       _buildSocialButton(
-                        icon: '🍎',
+                        icon: 'A',
                         onTap: () {
                           // TODO: Implement Apple login
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Apple ile giriş yakında eklenecek'),
+                            SnackBar(
+                              content: Text('apple_register'.tr()),
                             ),
                           );
                         },
@@ -242,8 +240,8 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () {
                           // TODO: Implement Facebook login
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Facebook ile giriş yakında eklenecek'),
+                            SnackBar(
+                              content: Text('facebook_register'.tr()),
                             ),
                           );
                         },
@@ -251,12 +249,12 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   const Spacer(),
-                  
+
                   // Register Link
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                       Text(
+                      Text(
                         'no_account'.tr(),
                         style: const TextStyle(
                           color: Colors.grey,
@@ -267,7 +265,7 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () {
                           context.go('/register');
                         },
-                        child:  Text(
+                        child: Text(
                           'sign_up'.tr(),
                           style: const TextStyle(
                             color: Colors.white,
@@ -297,21 +295,29 @@ class _LoginPageState extends State<LoginPage> {
       child: Container(
         width: 60,
         height: 60,
+        padding: icon == 'A' ? const EdgeInsets.all(16) : null,
         decoration: BoxDecoration(
           color: const Color(0xFF1F1F1F),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Center(
-          child: Text(
-            icon,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
+        child: icon == 'A'
+            ? Image.asset(
+                'assets/animations/apple.png',
+                width: 36,
+                height: 36,
+                color: Colors.white,
+              )
+            : Center(
+                child: Text(
+                  icon,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
       ),
     );
   }
-} 
+}

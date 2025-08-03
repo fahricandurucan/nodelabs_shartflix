@@ -19,6 +19,10 @@
   "confirm_password_required": "Şifre tekrarı gerekli",
   "passwords_not_match": "Şifreler eşleşmiyor",
   "terms_text": "Kullanıcı sözleşmesini okudum ve kabul ediyorum. Bu sözleşmeyi okuyarak devam ediniz lütfen.",
+  "terms_title": "Kullanıcı Sözleşmesi",
+  "terms_content": "Bu kullanıcı sözleşmesi, ShartFlix platformunu kullanırken uymanız gereken kuralları ve koşulları belirler.\n\n1. Hesap Güvenliği: Hesabınızın güvenliğinden siz sorumlusunuz.\n2. İçerik Kullanımı: Platformdaki içerikleri yasal sınırlar içinde kullanmalısınız.\n3. Gizlilik: Kişisel verileriniz güvenli şekilde korunacaktır.\n4. Kullanım Kuralları: Platformu kötüye kullanmayın.\n5. Değişiklikler: Bu sözleşme zaman zaman güncellenebilir.\n\nBu sözleşmeyi kabul ederek yukarıdaki koşulları kabul etmiş olursunuz.",
+  "terms_accept": "Kabul Ediyorum",
+  "terms_close": "Kapat",
   "register_button": "Şimdi Kaydol",
   "google_register": "Google ile kayıt yakında eklenecek",
   "apple_register": "Apple ile kayıt yakında eklenecek",
@@ -80,5 +84,13 @@
   "terms_agreement_part1": "Kullanıcı sözleşmesini ",
   "terms_agreement_part2": "okudum ve kabul ediyorum.",
   "please_read_terms": " Bu sözleşmeyi okuyarak devam ediniz lütfen.",
-  "login_subtitle": "Tekrar hoş geldiniz! Devam etmek için giriş yapın."
+  "login_subtitle": "Tekrar hoş geldiniz! Devam etmek için giriş yapın.",
+  "photo_upload_optional": "Fotoğraf Ekle (İsteğe Bağlı)",
+  "photo_upload_required": "Fotoğraf Ekle (Zorunlu)",
+  "skip_photo": "Fotoğrafı Atlayın",
+  "photo_upload_success": "Fotoğraf başarıyla yüklendi!",
+  "photo_upload_error": "Fotoğraf yüklenirken hata oluştu",
+  "photo_selection_error": "Fotoğraf seçilirken hata oluştu",
+  "camera_error": "Kamera hatası",
+  "please_select_photo": "Lütfen önce bir fotoğraf seçin"
 }
