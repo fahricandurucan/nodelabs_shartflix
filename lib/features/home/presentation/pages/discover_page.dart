@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loggy/loggy.dart';
 import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 import 'package:nodelabs_shartflix/features/auth/presentation/widgets/loading_gif_widget.dart';
 
@@ -20,7 +21,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
   @override
   void initState() {
     super.initState();
-    print('🎬 DiscoverPage: Initializing - loading first page');
+    logDebug('DiscoverPage: Initializing - loading first page');
     context.read<MoviesBloc>().add(const LoadMovies());
     
     _scrollController.addListener(_onScroll);
@@ -34,7 +35,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
 
   void _onScroll() {
     if (_isLoadingMore) {
-      print('⏳ DiscoverPage: Already loading more, skipping...');
+      logDebug('DiscoverPage: Already loading more, skipping...');
       return;
     }
 
@@ -42,8 +43,8 @@ class _DiscoverPageState extends State<DiscoverPage> {
         _scrollController.position.maxScrollExtent - 200) {
       final state = context.read<MoviesBloc>().state;
       if (state is MoviesLoaded && !state.hasReachedMax) {
-        print('📜 DiscoverPage: Near end of scroll - loading page ${state.currentPage + 1}');
-        print('📊 DiscoverPage: Current movies count: ${state.movies.length}');
+        logDebug('DiscoverPage: Near end of scroll - loading page ${state.currentPage + 1}');
+        logDebug('DiscoverPage: Current movies count: ${state.movies.length}');
         
         setState(() {
           _isLoadingMore = true;
@@ -51,7 +52,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
         
         context.read<MoviesBloc>().add(LoadMovies(page: state.currentPage + 1));
       } else if (state is MoviesLoaded && state.hasReachedMax) {
-        print('🏁 DiscoverPage: Reached max movies - no more loading');
+        logDebug('DiscoverPage: Reached max movies - no more loading');
       }
     }
   }
@@ -77,15 +78,15 @@ class _DiscoverPageState extends State<DiscoverPage> {
         },
         child: BlocBuilder<MoviesBloc, MoviesState>(
           builder: (context, state) {
-            print('🎬 DiscoverPage: Building with state: ${state.runtimeType}');
+            logDebug('DiscoverPage: Building with state: ${state.runtimeType}');
             
             if (state is MoviesLoading) {
-              print('🔄 DiscoverPage: Showing loading indicator');
+              logDebug('DiscoverPage: Showing loading indicator');
               return  Center(
                 child: LoadingGifWidget(color: AppColors.red,)
               );
             } else if (state is MoviesLoaded) {
-              print('📦 DiscoverPage: Showing ${state.movies.length} movies (page ${state.currentPage})');
+              logDebug('DiscoverPage: Showing ${state.movies.length} movies (page ${state.currentPage})');
               if (state.movies.isEmpty) {
                 return const Center(
                   child: Text(
@@ -105,7 +106,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                   itemCount: state.movies.length + (state.hasReachedMax ? 0 : 1),
                   itemBuilder: (context, index) {
                     if (index == state.movies.length) {
-                      print('🔄 DiscoverPage: Showing load more indicator');
+                      logDebug('DiscoverPage: Showing load more indicator');
                       return  Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: Center(
@@ -115,7 +116,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                     }
                     
                     final movie = state.movies[index];
-                    print('🎬 DiscoverPage: Building movie card for index $index: ${movie.title} - ${movie.isFavorite}');
+                    logDebug('DiscoverPage: Building movie card for index $index: ${movie.title} - ${movie.isFavorite}');
                     return SizedBox(
                       height: MediaQuery.of(context).size.height,
                       child: FullScreenMovieCard(
@@ -147,7 +148,7 @@ class _DiscoverPageState extends State<DiscoverPage> {
                 ),
               );
             } else if (state is MoviesError) {
-              print('❌ DiscoverPage: Showing error: ${state.message}');
+              logDebug('DiscoverPage: Showing error: ${state.message}');
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

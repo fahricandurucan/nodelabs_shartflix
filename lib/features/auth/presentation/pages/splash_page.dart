@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loggy/loggy.dart';
 import 'package:nodelabs_shartflix/features/auth/presentation/widgets/loading_gif_widget.dart';
 
 import '../bloc/auth_bloc.dart';
@@ -63,10 +64,10 @@ class _SplashPageState extends State<SplashPage>
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
-            print('✅ SplashPage: User authenticated, navigating to discover');
+            logDebug('SplashPage: User authenticated, navigating to discover');
             context.go('/discover');
           } else if (state is Unauthenticated) {
-            print('❌ SplashPage: User not authenticated, navigating to login');
+            logDebug('SplashPage: User not authenticated, navigating to login');
             context.go('/login');
           }
         },

@@ -1,3 +1,5 @@
+import 'package:loggy/loggy.dart';
+
 import '../../../../core/services/api_service.dart';
 import '../../domain/entities/movie.dart';
 import '../../domain/repositories/movies_repository.dart';
@@ -11,39 +13,39 @@ class MoviesRepositoryImpl implements MoviesRepository {
   @override
   Future<List<MovieModel>> getMovieList({int page = 1}) async {
     try {
-      print('🎬 Repository: Getting movies for page $page');
+      logDebug('Repository: Getting movies for page $page');
       final response = await _apiService.getMovieList(page: page);
 
-      print('📦 Repository Response for page $page:');
-      print('   Response Type: ${response.runtimeType}');
-      print('   Response Keys: ${response.keys.toList()}');
-      print('   Full Response: $response');
+      logDebug(' Repository Response for page $page:');
+      logDebug('   Response Type: ${response.runtimeType}');
+      logDebug('   Response Keys: ${response.keys.toList()}');
+      logDebug('   Full Response: $response');
 
       List<dynamic> moviesData;
 
       if (response['data'] != null && response['data']['movies'] != null) {
         moviesData = response['data']['movies'] as List;
-        print('   📋 Found movies in data.movies: ${moviesData.length} items');
+        logDebug('  Found movies in data.movies: ${moviesData.length} items');
       } else if (response['movies'] != null) {
         moviesData = response['movies'] as List;
-        print('   📋 Found movies in movies: ${moviesData.length} items');
+        logDebug('  Found movies in movies: ${moviesData.length} items');
       } else if (response is List) {
         moviesData = response as List;
-        print('   📋 Found movies in root list: ${moviesData.length} items');
+        logDebug(' Found movies in root list: ${moviesData.length} items');
       } else {
-        print('❌ Unexpected response structure: $response');
+        logDebug('Unexpected response structure: $response');
         return [];
       }
 
-      print('🎭 Processing ${moviesData.length} movies for page $page');
+      logDebug('Processing ${moviesData.length} movies for page $page');
 
       final movies = moviesData.map((movieJson) {
         try {
-          print(
+          logDebug(
               '   --------  isFavorite = ${movieJson['isFavorite']}   🎬 Processing movie: ${movieJson['Title'] ?? movieJson['title'] ?? 'Unknown.'}');
           return MovieModel.fromApiResponse(movieJson);
         } catch (e) {
-          print('❌ Error parsing movie: $movieJson, Error: $e');
+          logDebug('Error parsing movie: $movieJson, Error: $e');
           // Return a default movie if parsing fails
           return MovieModel(
             id: movieJson['id']?.toString() ?? '0',
@@ -79,10 +81,10 @@ class MoviesRepositoryImpl implements MoviesRepository {
         }
       }).toList();
 
-      print('✅ Successfully processed ${movies.length} movies for page $page');
+      logDebug('✅ Successfully processed ${movies.length} movies for page $page');
       return movies;
     } catch (e) {
-      print('❌ Repository Error for page $page: $e');
+      logDebug(' Repository Error for page $page: $e');
       throw Exception('Film listesi alınamadı: ${e.toString()}');
     }
   }

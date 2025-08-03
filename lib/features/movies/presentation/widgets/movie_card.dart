@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loggy/loggy.dart';
 
 import '../../domain/entities/movie.dart';
 import '../bloc/movies_bloc.dart';
@@ -57,7 +58,7 @@ class MovieCard extends StatelessWidget {
                     image: NetworkImage(imageUrl),
                     fit: BoxFit.cover,
                     onError: (exception, stackTrace) {
-                      print('Image loading error: $exception');
+                      logDebug('Image loading error: $exception');
                     },
                   ),
                 ),

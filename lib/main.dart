@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loggy/loggy.dart';
 
 import 'core/routes/app_router.dart';
 import 'core/services/api_service.dart';
@@ -16,6 +17,8 @@ import 'features/movies/presentation/bloc/movies_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+    Loggy.initLoggy();
+
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   final apiService = ApiService();

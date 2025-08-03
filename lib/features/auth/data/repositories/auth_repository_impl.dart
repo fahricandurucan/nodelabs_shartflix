@@ -1,3 +1,4 @@
+import 'package:loggy/loggy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/constants/app_constants.dart';
@@ -58,7 +59,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<String> uploadPhoto(String filePath) async {
     try {
       final response = await _apiService.uploadPhoto(filePath);
-      print('📋 Upload response structure: $response');
+      logDebug('📋 Upload response structure: $response');
       
       final data = response['data'] ?? response;
       final photoUrl = data['photoUrl'];
@@ -67,7 +68,7 @@ class AuthRepositoryImpl implements AuthRepository {
         throw Exception('API response\'da photoUrl bulunamadı');
       }
       
-      print('📸 Photo URL extracted: $photoUrl');
+      logDebug('📸 Photo URL extracted: $photoUrl');
       return photoUrl;
     } catch (e) {
       throw Exception('Fotoğraf yüklenemedi: ${e.toString()}');

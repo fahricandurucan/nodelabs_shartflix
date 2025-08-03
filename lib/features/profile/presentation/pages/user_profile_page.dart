@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loggy/loggy.dart';
 import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 import 'package:nodelabs_shartflix/features/auth/presentation/widgets/loading_gif_widget.dart';
 
@@ -123,10 +124,10 @@ class _UserProfileViewState extends State<_UserProfileView> {
       ),
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          print('🔄 Profile Page: Building with state: ${state.runtimeType}');
+          logDebug('🔄 Profile Page: Building with state: ${state.runtimeType}');
 
           if (state is Authenticated) {
-            print(
+            logDebug(
                 '✅ Profile Page: User authenticated - ${state.user.name} - ${state.user.profileImage}');
             return Column(
               children: [
@@ -272,7 +273,7 @@ class _UserProfileViewState extends State<_UserProfileView> {
                                             color: AppColors.red,
                                             fit: BoxFit.contain,
                                             errorBuilder: (context, error, stackTrace) {
-                                              print(error.toString());
+                                              logDebug(error.toString());
                                               return Icon(
                                                 Icons.movie_outlined,
                                                 color: Colors.grey,

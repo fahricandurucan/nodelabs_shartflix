@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loggy/loggy.dart';
 import 'package:nodelabs_shartflix/features/movies/data/models/movie_model.dart';
 
 import '../../../../core/services/api_service.dart';
@@ -110,26 +111,26 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     LoadMovies event,
     Emitter<MoviesState> emit,
   ) async {
-    print('🎬 BLoC: Loading movies for page ${event.page}');
+    logDebug('🎬 BLoC: Loading movies for page ${event.page}');
     
     if (_lastRequestedPage == event.page) {
-      print('⏳ BLoC: Already loading page ${event.page}, skipping...');
+      logDebug('⏳ BLoC: Already loading page ${event.page}, skipping...');
       return;
     }
     
     _lastRequestedPage = event.page;
     
     if (event.page == 1) {
-      print('🔄 BLoC: Emitting loading state');
+      logDebug('🔄 BLoC: Emitting loading state');
       emit(MoviesLoading());
     }
 
     try {
       final movies = await _getMoviesUseCase(page: event.page);
-      print('📦 BLoC: Received ${movies.length} movies for page ${event.page}');
+      logDebug('📦 BLoC: Received ${movies.length} movies for page ${event.page}');
       
       if (event.page == 1) {
-        print('🔄 BLoC: First page - emitting MoviesLoaded with ${movies.length} movies');
+        logDebug('🔄 BLoC: First page - emitting MoviesLoaded with ${movies.length} movies');
         emit(MoviesLoaded(
           movies: movies,
           currentPage: event.page,
@@ -137,9 +138,9 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
         ));
       } else {
         final currentState = state as MoviesLoaded;
-        print('🔄 BLoC: Appending ${movies.length} movies to existing ${currentState.movies.length} movies');
+        logDebug('🔄 BLoC: Appending ${movies.length} movies to existing ${currentState.movies.length} movies');
         final updatedMovies = [...currentState.movies, ...movies];
-        print('📊 BLoC: Total movies after append: ${updatedMovies.length}');
+        logDebug('📊 BLoC: Total movies after append: ${updatedMovies.length}');
         emit(MoviesLoaded(
           movies: updatedMovies,
           currentPage: event.page,
@@ -147,7 +148,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
         ));
       }
     } catch (e) {
-      print('❌ BLoC Error: $e');
+      logDebug('❌ BLoC Error: $e');
       emit(MoviesError(e.toString()));
     }
   }
@@ -156,7 +157,7 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     RefreshMovies event,
     Emitter<MoviesState> emit,
   ) async {
-    print('🔄 BLoC: Refreshing movies');
+    logDebug('🔄 BLoC: Refreshing movies');
     _lastRequestedPage = null; 
     add(const LoadMovies(page: 0));
   }

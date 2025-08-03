@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loggy/loggy.dart';
 
 import '../../../../core/services/api_service.dart';
 import '../../data/repositories/auth_repository_impl.dart';
@@ -200,23 +201,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     UploadPhotoRequested event,
     Emitter<AuthState> emit,
   ) async {
-    print('🔄 Auth Bloc: Starting photo upload...');
+    logDebug('Auth Bloc: Starting photo upload...');
     emit(PhotoUploading());
     try {
       final photoUrl = await _authRepository.uploadPhoto(event.filePath);
-      print('✅ Auth Bloc: Photo uploaded successfully: $photoUrl');
+      logDebug(' Auth Bloc: Photo uploaded successfully: $photoUrl');
       
-      print('🔄 Auth Bloc: Fetching updated user profile...');
+      logDebug('Auth Bloc: Fetching updated user profile...');
       final updatedUser = await _authRepository.getProfile();
-      print('✅ Auth Bloc: Updated user profile: ${updatedUser.name} - ${updatedUser.profileImage}');
+      logDebug('Auth Bloc: Updated user profile: ${updatedUser.name} - ${updatedUser.profileImage}');
       
       emit(PhotoUploaded(photoUrl));
-      print('✅ Auth Bloc: Emitted PhotoUploaded state');
+      logDebug('Auth Bloc: Emitted PhotoUploaded state');
       
       emit(Authenticated(updatedUser));
-      print('✅ Auth Bloc: Emitted Authenticated state with updated user');
+      logDebug('Auth Bloc: Emitted Authenticated state with updated user');
     } catch (e) {
-      print('❌ Auth Bloc: Error during photo upload: $e');
+      logDebug('Auth Bloc: Error during photo upload: $e');
       emit(AuthError(e.toString()));
     }
   }

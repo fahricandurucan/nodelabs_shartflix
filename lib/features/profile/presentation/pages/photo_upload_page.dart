@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loggy/loggy.dart';
 import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 import 'package:nodelabs_shartflix/features/auth/presentation/widgets/loading_gif_widget.dart';
 
@@ -29,7 +30,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
 
   Future<void> _pickImageFromGallery() async {
     try {
-      print('📸 Picking image from gallery...');
+      logDebug('📸 Picking image from gallery...');
       
       final XFile? image = await _picker.pickImage(
         source: ImageSource.gallery,
@@ -39,15 +40,15 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
       );
       
       if (image != null) {
-        print('✅ Image selected: ${image.path}');
+        logDebug('✅ Image selected: ${image.path}');
         setState(() {
           _selectedImage = File(image.path);
         });
       } else {
-        print('❌ No image selected');
+        logDebug('❌ No image selected');
       }
     } catch (e) {
-      print('❌ Image picker error: $e');
+      logDebug('❌ Image picker error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Fotoğraf seçilirken hata oluştu: ${e.toString()}'),
@@ -60,7 +61,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
 
   Future<void> _pickImageFromCamera() async {
     try {
-      print('📸 Picking image from camera...');
+      logDebug('📸 Picking image from camera...');
       
       final XFile? image = await _picker.pickImage(
         source: ImageSource.camera,
@@ -70,15 +71,15 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
       );
       
       if (image != null) {
-        print('✅ Image selected: ${image.path}');
+        logDebug('✅ Image selected: ${image.path}');
         setState(() {
           _selectedImage = File(image.path);
         });
       } else {
-        print('❌ No image selected');
+        logDebug('❌ No image selected');
       }
     } catch (e) {
-      print('❌ Camera error: $e');
+      logDebug('❌ Camera error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Kamera hatası: ${e.toString()}'),
@@ -107,8 +108,8 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
     });
 
     try {
-      print('📤 Starting photo upload...');
-      print('📁 File path: ${_selectedImage!.path}');
+      logDebug('📤 Starting photo upload...');
+      logDebug('📁 File path: ${_selectedImage!.path}');
       
       // Use Auth Bloc to upload photo
       context.read<AuthBloc>().add(UploadPhotoRequested(_selectedImage!.path));
@@ -116,7 +117,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
       // Listen for the result
       await for (final state in context.read<AuthBloc>().stream) {
         if (state is PhotoUploaded) {
-          print('✅ Upload successful: ${state.photoUrl}');
+          logDebug('✅ Upload successful: ${state.photoUrl}');
           
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -131,7 +132,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
           }
           break;
         } else if (state is AuthError) {
-          print('❌ Upload error: ${state.message}');
+          logDebug('❌ Upload error: ${state.message}');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Yükleme sırasında hata oluştu: ${state.message}'),
@@ -145,7 +146,7 @@ class _PhotoUploadPageState extends State<PhotoUploadPage> {
         }
       }
     } catch (e) {
-      print('❌ Upload error: $e');
+      logDebug('❌ Upload error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Yükleme sırasında hata oluştu: ${e.toString()}'),

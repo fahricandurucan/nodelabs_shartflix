@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loggy/loggy.dart';
 import 'package:nodelabs_shartflix/core/constants/app_colors.dart';
 
 import '../../domain/entities/movie.dart';
@@ -47,9 +48,9 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
 
   @override
   Widget build(BuildContext context) {
-    print('poster image = ${widget.movie.posterPath}');
+    logDebug('poster image = ${widget.movie.posterPath}');
     final imageUrl = _getImageUrl(widget.movie.posterPath);
-    print('processed image url = $imageUrl');
+    logDebug('processed image url = $imageUrl');
     
     return GestureDetector(
       onVerticalDragUpdate: (details) {
@@ -78,7 +79,7 @@ class _FullScreenMovieCardState extends State<FullScreenMovieCard> {
               image: NetworkImage(imageUrl),
               fit: BoxFit.cover,
               onError: (exception, stackTrace) {
-                print('Image loading error: $exception');
+                logDebug('Image loading error: $exception');
               },
             ),
           ),

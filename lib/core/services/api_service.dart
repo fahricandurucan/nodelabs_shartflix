@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:loggy/loggy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
@@ -70,8 +71,8 @@ class ApiService {
 
   Future<Map<String, dynamic>> uploadPhoto(String filePath) async {
     try {
-      print('📤 Uploading photo from: $filePath');
-      print('🔗 API URL: ${AppConstants.baseUrl}${AppConstants.uploadPhotoEndpoint}');
+      logDebug('📤 Uploading photo from: $filePath');
+      logDebug('🔗 API URL: ${AppConstants.baseUrl}${AppConstants.uploadPhotoEndpoint}');
       
       final formData = FormData.fromMap({
         'file': await MultipartFile.fromFile(filePath),
@@ -79,13 +80,13 @@ class ApiService {
       
       final response = await _dio.post(AppConstants.uploadPhotoEndpoint, data: formData);
       
-      print('✅ Upload response:');
-      print('   Status Code: ${response.statusCode}');
-      print('   Data: ${response.data}');
+      logDebug('✅ Upload response:');
+      logDebug('   Status Code: ${response.statusCode}');
+      logDebug('   Data: ${response.data}');
       
       return response.data;
     } catch (e) {
-      print('❌ Upload error: $e');
+      logDebug('❌ Upload error: $e');
       throw _handleError(e);
     }
   }
@@ -93,23 +94,23 @@ class ApiService {
   // Movie Methods
   Future<Map<String, dynamic>> getMovieList({int page = 1}) async {
     try {
-      print('🔍 API Call: Getting movies for page $page');
-      print('🔗 API URL: ${AppConstants.baseUrl}${AppConstants.movieListEndpoint}');
-      print('📋 Query Parameters: {"page": $page}');
+      logDebug('🔍 API Call: Getting movies for page $page');
+      logDebug('🔗 API URL: ${AppConstants.baseUrl}${AppConstants.movieListEndpoint}');
+      logDebug('📋 Query Parameters: {"page": $page}');
       
       final response = await _dio.get(AppConstants.movieListEndpoint, queryParameters: {
         'page': page,
       });
       
-      // Debug: Print response to understand structure
-      print('📡 Movie List Response for page $page:');
-      print('   Status Code: ${response.statusCode}');
-      print('   Data Type: ${response.data.runtimeType}');
-      print('   Data: ${response.data}');
+      // Debug: logDebug response to understand structure
+      logDebug('📡 Movie List Response for page $page:');
+      logDebug('   Status Code: ${response.statusCode}');
+      logDebug('   Data Type: ${response.data.runtimeType}');
+      logDebug('   Data: ${response.data}');
       
       return response.data;
     } catch (e) {
-      print('❌ API Error for page $page: $e');
+      logDebug('❌ API Error for page $page: $e');
       throw _handleError(e);
     }
   }
